@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import "./login.styles.scss"
 import Input from "../../components/input/input";
 import {Link} from "react-router-dom";
+import Button from "../../components/button/button";
 
 const Login = () => {
 
@@ -31,9 +32,14 @@ const Login = () => {
                     placeholder={"Mot de passe"}
                     name={"name"}
                 />
+                <div className="link-container">
+                    <Link to={"/register"}>Créer un compte</Link>
+                </div>
             </form>
 
-            <Link to={"/register"}>Créer un compte</Link>
+            <div className="button-container">
+                <Button>Se connecter</Button>
+            </div>
         </div>
     )
 }

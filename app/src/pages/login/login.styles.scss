@@ -1,9 +1,29 @@
-h1 {
-  color: var(--blanc-projet);
-  margin-top: 0;
-  padding-top: 20px;
-}
 
 .Login {
   padding: 0 20px;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  h1 {
+    color: var(--blanc-projet);
+    margin-top: 0;
+    padding-top: 20px;
+  }
+
+  .link-container {
+    text-align: right;
+    color: var(--blanc-projet);
+
+    a {
+      color: var(--violet);
+      text-decoration: none;
+    }
+  }
+
+  .button-container {
+    margin-top: auto;
+    margin-bottom: 50px;
+  }
 }
