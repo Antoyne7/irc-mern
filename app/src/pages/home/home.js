@@ -9,7 +9,6 @@ const Home = () => {
             <div className="home-content">
                 <div className="container">
                     <div className="content">
-                        <h2>Antoyne's Channel</h2>
                     </div>
                 </div>
             </div>
