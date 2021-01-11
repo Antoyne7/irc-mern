@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useHi} from "react";
+import { useHistory } from "react-router-dom";
 
 import "./auth.styles.scss"
 import Input from "../../components/input/input";
@@ -8,6 +9,7 @@ import Button from "../../components/button/button";
 import AuthService from "../../services/auth.service"
 
 const Login = () => {
+    const history = useHistory();
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -30,6 +32,7 @@ const Login = () => {
             () => {
                 // TODO: redirect
                 console.log("Redirect page", AuthService.getCurrentUser())
+                history.push("/main");
             },
             (error) => {
                 const resMessage =
