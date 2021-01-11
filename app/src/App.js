@@ -1,8 +1,8 @@
 import './styles/App.css';
 import {Switch, Route} from "react-router-dom";
 
-import Login from './pages/login/login'
-import Register from "./pages/register/register";
+import Login from './pages/auth/login'
+import Register from "./pages/auth/register";
 import Home from "./pages/home/home";
 
 function App() {

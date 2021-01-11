@@ -2,12 +2,23 @@
   width: 100%;
   font-size: 18px;
   height: 46px;
-  color: var(--blanc-projet);
+  color: var(--contrast-projet);
   padding: 0 20px;
   line-height: 46px;
   margin-bottom: 20px;
   border-radius: 6px;
-  background-color: var(--noir-bis);
+  background-color: var(--background-bis);
   border: none;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
+  outline-color: var(--primary);
+}
+
+
+/* Change Autocomplete styles in Chrome*/
+.Input:-webkit-autofill,
+.Input:-webkit-autofill:hover,
+.Input:-webkit-autofill:focus,
+{
+  transition: background-color 50000s;
+  -webkit-text-fill-color: var(--contrast-projet);
 }
