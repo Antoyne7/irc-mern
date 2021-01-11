@@ -1,18 +1,20 @@
 :root {
-    --noir: #1F1C21;
-    --noir-bis: #29262B;
-    --violet: #8360C7;
-    --violet-clair: #A281D5;
-    --violet-fonce: #7350B9;
-    --blanc-projet: #F7F7F9;
-    --blanc-fond-clair: #F2F2F2;
+    --background: #1F1C21;
+    --background-bis: #29262B;
+    --primary: #8360C7;
+    --primary-clair: #A281D5;
+    --primary-fonce: #7350B9;
+    --contrast-projet: #F7F7F9;
+    --contrast-fond-clair: #F2F2F2;
     --blanc: #FFFFFF;
     --gris: #7D7D7D;
 }
 
 .App {
-    background-color: var(--noir);
-
+    background-color: var(--background);
     min-width: 100vw;
     min-height: 100vh;
 }
+
+
+

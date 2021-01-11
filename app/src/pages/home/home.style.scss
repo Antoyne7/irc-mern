@@ -1,0 +1,22 @@
+.home {
+  display: flex;
+
+  .home-content {
+    width: 100%;
+
+    .container {
+      max-width: 90%;
+      margin: auto;
+      .content {
+        padding: 15px 0;
+      }
+      h2{
+        font-size: 4.8rem;
+        font-weight: 800;
+        color: var(--contrast-projet);
+        margin: 0;
+
+      }
+    }
+  }
+}
