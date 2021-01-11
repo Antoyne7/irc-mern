@@ -11,11 +11,12 @@
     --gris: #7D7D7D;
 
     --sidebar-size: 375px;
+    --menu-size:70px;
 }
 
 @media (max-width: 1440px) {
     :root {
-        --sidebar-size: 300px;
+        --sidebar-size: 320px;
     }
 }
 

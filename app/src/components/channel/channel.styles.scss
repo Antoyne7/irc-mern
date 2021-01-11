@@ -21,8 +21,10 @@
 
 .channel-message-container {
   width: 100%;
-  height: calc(100vh - 180px);
-
+  height: calc(100vh - 150px);
+  @media (max-width: 992px) {
+    height: calc(100vh - 220px);
+  }
   overflow-y: scroll;
   //TODO: changer la couleur (peut être)
   background: var(--background);
@@ -41,6 +43,12 @@
 
   .messages-container {
     padding: 20px 0 10px;
+    @media(max-width: 1440px) {
+      padding: 10px 0;
+    }
+    @media (max-width: 992px) {
+      padding: 0;
+    }
 
     .message {
       display: flex;
@@ -109,6 +117,9 @@
   transform: translateX(-50%);
   //TODO: changer la couleur
   background: var(--background);
+  @media (max-width: 992px) {
+    bottom: unset;
+  }
 
   .container {
     margin: 0;
@@ -139,12 +150,20 @@
       justify-content: center;
       align-items: center;
       height: 100%;
+
       svg {
+        width: 38px;
+
+        &:first-of-type {
+          width: 36px;
+        }
+
         &:last-of-type {
           margin-right: 8px;
-          width: 22px;
+          width: 36px;
           height: auto;
         }
+
         padding: 0 7px;
         cursor: pointer;
       }
