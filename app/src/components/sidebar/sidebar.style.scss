@@ -1,14 +1,14 @@
 .sidebar {
-  width: 375px;
+  width: var(--sidebar-size);
   height: 100vh;
   background: var(--background-bis);
   filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.08));
-  @media (max-width: 1440px) {
-    width: 300px;
-  }
 
   .sidebar-content {
     padding: 25px;
+    @media (max-width: 1440px) {
+      padding: 25px 10px;
+    }
 
     .user {
       display: flex;

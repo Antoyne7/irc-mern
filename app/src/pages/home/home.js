@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar from "../../components/sidebar/sidebar";
+import Channel from "../../components/channel/channel"
 import "./home.style.scss"
 
 const Home = () => {
@@ -7,9 +8,8 @@ const Home = () => {
         <div className="home">
             <Sidebar/>
             <div className="home-content">
-                <div className="container">
-                    <div className="content">
-                    </div>
+                <div className="content">
+                    <Channel/>
                 </div>
             </div>
         </div>

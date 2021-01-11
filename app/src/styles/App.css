@@ -1,6 +1,7 @@
 :root {
     --background: #1F1C21;
     --background-bis: #29262B;
+    --background-ecriture: #2A292B;
     --primary: #8360C7;
     --primary-clair: #A281D5;
     --primary-fonce: #7350B9;
@@ -8,13 +9,24 @@
     --contrast-fond-clair: #F2F2F2;
     --blanc: #FFFFFF;
     --gris: #7D7D7D;
+
+    --sidebar-size: 375px;
 }
+
+@media (max-width: 1440px) {
+    :root {
+        --sidebar-size: 300px;
+    }
+}
+
 
 .App {
     background-color: var(--background);
     min-width: 100vw;
     min-height: 100vh;
 }
+
+
 
 
 
