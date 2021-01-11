@@ -1,11 +1,17 @@
 import React from "react";
 
-const Input = ({value}) => {
+import "./input.style.scss"
+
+const Input = ({value, placeholder = "", name}) => {
 
     return (
-        <div>
-            <input type="text" value={value}/>
-        </div>
+        <input
+            className="Input"
+            type="text"
+            defaultValue={value}
+            placeholder={placeholder}
+            name={name}
+        />
     )
 }
 
