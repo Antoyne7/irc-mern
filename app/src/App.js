@@ -3,7 +3,8 @@ import {Switch, Route} from "react-router-dom";
 
 import Login from './pages/auth/login'
 import Register from "./pages/auth/register";
-import Home from "./pages/home/home";
+import NewChannel from "./pages/channel/new-channel";
+import Channel from "./pages/channel/channel";
 
 function App() {
     return (
@@ -15,11 +16,11 @@ function App() {
                 <Route path="/register">
                     <Register/>
                 </Route>
-                <Route path="/channels">
-                    <Register/>
+                <Route exact path={["/home", "/channels"]}>
+                    <Channel />
                 </Route>
-                <Route path="/home">
-                    <Home/>
+                <Route path="/channels/new">
+                    <NewChannel />
                 </Route>
             </Switch>
         </div>
