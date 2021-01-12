@@ -1,11 +1,16 @@
 import React, {useState} from "react";
+import {useHistory} from "react-router-dom";
 
 import Input from "../input/input";
 import Button from "../button/button";
+import authHeader from "../../services/auth-header";
 
 import "./createChannel.style.scss"
+import axios from "axios";
+import param from "../../services/param";
 
 const CreateChannel = () => {
+    const history = useHistory();
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [passwordRepeat, setPasswordRepeat] = useState("")
@@ -27,25 +32,24 @@ const CreateChannel = () => {
 
     const handleCreation = (e) => {
         e.preventDefault();
+        const user = JSON.parse(localStorage.getItem("user"));
+        const username = user.user.username;
+
+        axios.post(param.channel.add,
+            {name, password, passwordRepeat, username}, {headers: authHeader()})
+            .then((response) => {
+                console.log(response);
+                //TODO: ajouter une animation à la fin de l'ajout
+                history.push({
+                    pathname: '/channels/' + response.data.channel,
+                    state: {channel: response.data.channel}
+                })
+            }).catch(e => {
+            console.log(e)
+        })
+
         console.log("cool", name, password, passwordRepeat)
-        // setMessage("");
-        // setSuccessful(false);
-        /*AuthService.register(username, email, password, passwordRepeat).then(
-            (response) => {
-                // setMessage(response.data.message);
-                // setSuccessful(true);
-            },
-            (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                // setMessage(resMessage);
-                // setSuccessful(false);
-            }
-        );*/
+
     };
 
     return (
@@ -60,12 +64,14 @@ const CreateChannel = () => {
                 <Input
                     placeholder="Mot de passe"
                     name="channel-password"
+                    type="password"
                     value={password}
                     onChange={onChangePassword}
                 />
                 <Input
                     placeholder="Confirmez le mot de passe"
                     name="channel-password-repeat"
+                    type="password"
                     value={passwordRepeat}
                     onChange={onChangePasswordRepeat}
                 />

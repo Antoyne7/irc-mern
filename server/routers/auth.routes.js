@@ -70,7 +70,7 @@ router.post('/auth/guest_login',
 
             //Generate random password
             const password = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            const email = null;
+
             const user = new User({username, password});
 
             await Role.find({

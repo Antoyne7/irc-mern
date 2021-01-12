@@ -1,8 +1,33 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs")
 
 const ChannelSchema = new mongoose.Schema({
-    title: String,
-    picture: String,
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: false,
+        minLength: 4
+    },
+    picture: {
+        type: String,
+        required: false,
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    messages: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "message",
+        }
+    ],
+
     users: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -10,4 +35,14 @@ const ChannelSchema = new mongoose.Schema({
         }
     ]
 });
+
+ChannelSchema.pre("save", async function (next) {
+    // Hash the password before saving the user model
+    const channel = this;
+    if (channel.isModified("password")) {
+        channel.password = await bcrypt.hash(channel.password, 8)
+    }
+    next()
+})
+
 module.exports = mongoose.model("Channel", ChannelSchema);

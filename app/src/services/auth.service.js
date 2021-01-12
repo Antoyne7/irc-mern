@@ -47,8 +47,7 @@ const getCurrentUser = () => {
 };
 
 const checkToken = (redirectLogin = true) => {
-    axios
-        .get(param.auth.checkToken, {
+    axios.get(param.auth.checkToken, {
             headers: AuthHeader(),
         })
         .catch(() => {

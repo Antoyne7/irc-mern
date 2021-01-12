@@ -17,7 +17,7 @@ const ListItem = ({text, icon = "add", height = "320px", children}) => {
                 "--height": height
             }}
         >
-            <div className="main">
+            <div onClick={() => setToggle(!toggle)} className="main">
                 <div className="icon-type-container">
                     {
                         icon === "add" &&
@@ -31,7 +31,7 @@ const ListItem = ({text, icon = "add", height = "320px", children}) => {
                 <div className="text-container">
                     {text}
                 </div>
-                <div className="icon-arrow-container" onClick={() => setToggle(!toggle)}>
+                <div className="icon-arrow-container" >
                     <img src={triangle} alt="Arrow icon"/>
                 </div>
             </div>

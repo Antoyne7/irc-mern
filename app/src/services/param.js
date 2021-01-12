@@ -8,5 +8,8 @@ export default {
         signup: APIHOST + "/auth/signup",
         guest_login: APIHOST + "/auth/guest_login",
         checkToken: APIHOST + "/auth/check",
+    },
+    channel: {
+        add: APIHOST + "/channel/add"
     }
 }
