@@ -1,11 +1,11 @@
 import React from "react"
 import "./menu.styles.scss"
 
-const menu = () => {
+const menu = ({selected = 0}) => {
     return (
         <div className="menu">
 
-            <div className="select active">
+            <div className={`select ${selected === 1 ? "active" : ""}`}>
                 <svg className="icon-select" width="39" height="28" viewBox="0 0 39 28" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd"
@@ -15,7 +15,7 @@ const menu = () => {
 
             </div>
 
-            <div className="profile">
+            <div className={`profile ${selected === 2 ? "active" : ""}`}>
                 <svg className="icon-profile" width="27" height="29" viewBox="0 0 27 29" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -24,7 +24,7 @@ const menu = () => {
                 </svg>
 
             </div>
-            <div className="add">
+            <div className={`add ${selected === 3 ? "active" : ""}`}>
                 <svg className="icon-add" width="27" height="29" viewBox="0 0 27 29" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path

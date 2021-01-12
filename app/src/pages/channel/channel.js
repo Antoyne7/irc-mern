@@ -3,12 +3,12 @@ import React from "react";
 import Home from "../../components/home/home";
 import ChannelComponent from "../../components/channel/channel"
 
-const Channel = () => {
+const Channels = () => {
     return (
-        <Home>
+        <Home menuSelected={1}>
             <ChannelComponent />
         </Home>
     )
 };
 
-export default Channel
+export default Channels

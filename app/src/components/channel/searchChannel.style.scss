@@ -1,0 +1,24 @@
+.SearchChannel {
+  padding: 0 10px;
+
+  input {
+    background-color: var(--background);
+  }
+
+  .channels .channel-item {
+    color: var(--contrast-projet);
+    margin-bottom: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .channel-users {
+      color: var(--primary);
+      font-size: 14px;
+      svg {
+        margin-left: 4px;
+      }
+    }
+  }
+}

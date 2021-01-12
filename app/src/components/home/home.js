@@ -3,7 +3,7 @@ import Sidebar from "../sidebar/sidebar";
 import Menu from "../menu/menu"
 import "./home.style.scss"
 
-const Home = ({children}) => {
+const Home = ({children, menuSelected = 0}) => {
     return (
         <div className="home">
             <div className="home-container">
@@ -13,7 +13,7 @@ const Home = ({children}) => {
                         {children}
                     </div>
                 </div>
-                <Menu/>
+                <Menu selected={menuSelected}/>
             </div>
         </div>
     )

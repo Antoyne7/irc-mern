@@ -2,11 +2,16 @@ import React from "react";
 
 import "./button.style.scss"
 
-const Button = ({children, onClick = null}) => {
+const BUTTON_THEMES = [
+    "primary",
+    "secondary"
+]
+
+const Button = ({children, onClick = null, theme = "primary"}) => {
     return (
         <button
             onClick={(evt) => onClick(evt)}
-            className="Button"
+            className={"Button " + theme}
         >
             {children}
         </button>

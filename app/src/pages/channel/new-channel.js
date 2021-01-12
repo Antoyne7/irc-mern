@@ -5,7 +5,7 @@ import NewChannelComponent from "../../components/channel/new-channel";
 
 const NewChannel = () => {
     return (
-        <Home>
+        <Home menuSelected={3}>
             <NewChannelComponent />
         </Home>
     )

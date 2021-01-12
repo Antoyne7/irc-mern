@@ -1,21 +1,24 @@
 import React from "react"
-import { useHistory } from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
+
+import "./navigation.style.scss"
 
 import triangle from "../../assets/triangle.svg"
 import settings from "../../assets/setting.svg"
 
-const Navigation = () => {
-    const history = useHistory()
+const Navigation = ({showSettings = false}) => {
+    // const history = useHistory()
 
     return (
         <div className="Navigation">
-            <Link to={"/channels"}>
+            <Link to={"/channels"} className="back">
                 <img src={triangle} alt="Back icon" /> Retour
             </Link>
 
-            <Link to={"/channels/CHANNEL/param"}>
-                <img src={settings} alt="Settings icon"/>
-            </Link>
+            {showSettings && <Link to={"/channels/CHANNEL/param"} className="settings">
+                    <img src={settings} alt="Settings icon"/>
+                </Link>
+            }
         </div>
     )
 }

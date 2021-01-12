@@ -4,7 +4,7 @@ import {Switch, Route} from "react-router-dom";
 import Login from './pages/auth/login'
 import Register from "./pages/auth/register";
 import NewChannel from "./pages/channel/new-channel";
-import Channel from "./pages/channel/channel";
+import Channels from "./pages/channel/channel";
 
 function App() {
     return (
@@ -17,7 +17,7 @@ function App() {
                     <Register/>
                 </Route>
                 <Route exact path={["/home", "/channels"]}>
-                    <Channel />
+                    <Channels />
                 </Route>
                 <Route path="/channels/new">
                     <NewChannel />
