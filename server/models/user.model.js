@@ -13,13 +13,10 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        // required: false,
+        required: false,
         trim: true,
-        index: {
-            sparse: true,
-            unique: true,
-            partialFilterExpression: {email: {$type: "string"}}
-        },
+        sparse: true,
+        unique: true,
         lowercase: true,
         validate: (value) => {
             if (!validator.isEmail(value)) {
