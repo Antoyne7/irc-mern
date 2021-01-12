@@ -1,8 +1,8 @@
 import React from "react";
 import "./sidebar.style.scss"
-// import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-// import {faPlus} from '@fortawesome/free-solid-svg-icons'
-// import {faSearch} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faPlus} from '@fortawesome/free-solid-svg-icons'
+import {faSearch} from '@fortawesome/free-solid-svg-icons'
 
 import Picture from "../picture/picture"
 
@@ -17,10 +17,10 @@ const Sidebar = () => {
                 </div>
                 <div className="link-container">
                     <a className="link" href="">
-                        {/*<FontAwesomeIcon icon={faSearch}/>*/}
+                        <FontAwesomeIcon icon={faSearch}/>
                         Rechercher un salon</a>
                     <a className="link" href="">
-                        {/*<FontAwesomeIcon icon={faPlus}/>*/}
+                        <FontAwesomeIcon icon={faPlus}/>
                         Creer un salon</a>
                 </div>
                 <hr/>

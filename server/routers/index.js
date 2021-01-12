@@ -1,5 +1,5 @@
-const authRoutes = require("./auth.routes")
-const testRoutes = require("./test.routes")
+const authRoutes = require("./auth.routes");
+const testRoutes = require("./test.routes");
 
 const express = require("express");
 const router = express.Router();
@@ -15,8 +15,8 @@ module.exports = function(app) {
     });
 
     // Les routes
-    router.use(authRoutes)
-    router.use(testRoutes)
+    router.use(authRoutes);
+    router.use(testRoutes);
 
     // Base path
     app.use('/api', router)
