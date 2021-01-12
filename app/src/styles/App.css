@@ -16,7 +16,18 @@
     --primary-fonce: var(--violet-fonce);
     --contrast-projet: var(--blanc-projet);
     --contrast-fond-clair: var(--blanc-fond-clair);
+
+
+    --sidebar-size: 375px;
+    --menu-size:70px;
 }
+
+@media (max-width: 1440px) {
+    :root {
+        --sidebar-size: 320px;
+    }
+}
+
 
 .App {
     background-color: var(--background);

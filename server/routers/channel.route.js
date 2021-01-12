@@ -7,4 +7,4 @@ router.post("/channel/message", (req, res) => {
     res.json(
         {}
     )
-})
+});
