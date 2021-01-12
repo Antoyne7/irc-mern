@@ -3,8 +3,12 @@
   border: none;
   border-radius: 6px;
   height: 50px;
-
+  font-family: Lato, sans-serif;
   color: var(--blanc-projet);
   background-color: var(--violet-fonce);
   font-size: 22px;
+  &.border-only {
+    background-color: transparent;
+    border: 2px solid var(--violet-fonce);
+  }
 }

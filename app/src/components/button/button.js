@@ -2,11 +2,19 @@ import React from "react";
 
 import "./button.style.scss"
 
-const Button = ({children, onClick = null}) => {
+
+const Button = ({children, onClick = null, borderOnly = false}) => {
+
+    const handleClick = (evt) => {
+        if (onClick){
+            onClick(evt)
+        }
+    };
+
     return (
         <button
-            onClick={(evt) => onClick(evt)}
-            className="Button"
+            onClick={(evt) => handleClick(evt)}
+            className={`Button ${borderOnly ? "border-only" : ""}`}
         >
             {children}
         </button>
