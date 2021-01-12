@@ -1,12 +1,22 @@
 :root {
-    --background: #1F1C21;
-    --background-bis: #29262B;
+    --noir: #1F1C21;
+    --noir-bis: #29262B;
+    --violet: #8360C7;
+    --violet-clair: #A281D5;
+    --violet-fonce: #7350B9;
+    --blanc-projet: #F7F7F9;
+    --blanc-fond-clair: #F2F2F2;
+    --blanc: #FFFFFF;
+    --gris: #7D7D7D;
+
+    --background: var(--noir);
+    --background-bis: var(--noir-bis);
+    --primary: var(--violet);
+    --primary-clair: var(--violet-clair);
+    --primary-fonce: var(--violet-fonce);
+    --contrast-projet: var(--blanc-projet);
+    --contrast-fond-clair: var(--blanc-fond-clair);
     --background-ecriture: #2A292B;
-    --primary: #8360C7;
-    --primary-clair: #A281D5;
-    --primary-fonce: #7350B9;
-    --contrast-projet: #F7F7F9;
-    --contrast-fond-clair: #F2F2F2;
     --blanc: #FFFFFF;
     --gris: #7D7D7D;
 
@@ -19,7 +29,6 @@
         --sidebar-size: 320px;
     }
 }
-
 
 .App {
     background-color: var(--background);

@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap');
 
+@import "./scss/variables";
+
 html {
   font-size: 62.5%;
   @media (max-width: 1440px) {
