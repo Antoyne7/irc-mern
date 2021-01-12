@@ -1,0 +1,27 @@
+.menu {
+  height: var(--menu-size);
+  display: flex;
+  border-top: solid var(--primary) 4px;
+  @media (min-width: 992px) {
+    display: none;
+  }
+
+  div {
+    display: flex;
+    flex: 0 0 33.3333%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &.active {
+      &:after {
+        content: url("../../assets/triangle.svg");
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+
+      }
+    }
+  }
+}

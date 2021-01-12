@@ -1,21 +1,32 @@
 .home {
-  display: flex;
+  .home-container {
+    display: flex;
+    @media (max-width: 992px) {
+      height:100vh ;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-  .home-content {
-    width: 100%;
+    .home-content {
+      width: 100%;
+      position: relative;
 
-    .container {
-      max-width: 90%;
-      margin: auto;
       .content {
-        padding: 15px 0;
-      }
-      h2{
-        font-size: 4.8rem;
-        font-weight: 800;
-        color: var(--contrast-projet);
-        margin: 0;
+        height: 100%;
+        box-sizing: border-box;
 
+        .container {
+          max-width: 90%;
+          margin: auto;
+
+          h2 {
+            font-size: 4.8rem;
+            font-weight: 800;
+            color: var(--contrast-projet);
+            margin: 0;
+
+          }
+        }
       }
     }
   }
