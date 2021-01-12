@@ -7,12 +7,19 @@ const config = require("../config/auth.config")
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        unique: true
     },
     email: {
         type: String,
-        required: false,
-        unique: true,
+        // required: false,
+        trim: true,
+        index: {
+            sparse: true,
+            unique: true,
+            partialFilterExpression: {email: {$type: "string"}}
+        },
         lowercase: true,
         validate: (value) => {
             if (!validator.isEmail(value)) {
@@ -22,7 +29,7 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: false,
+        required: true,
         minLength: 7
     },
     channels: [
@@ -49,9 +56,9 @@ UserSchema.pre("save", async function (next) {
 })
 
 
-UserSchema.statics.findByCredentials = async (email, password) => {
+UserSchema.statics.findByCredentials = async (identifier, password) => {
     // Search for a user by email and password.
-    const user = await User.findOne({email}).exec()
+    const user = await User.findOne({identifier}).exec()
     if (!user) {
         throw new Error({error: 'Invalid auth credentials'})
     }
@@ -60,15 +67,27 @@ UserSchema.statics.findByCredentials = async (email, password) => {
         throw new Error({error: 'Invalid auth credentials'})
     }
     return user
-}
+};
+
+UserSchema.statics.findByUsername = async (username) => {
+    // Search for a user by username and password.
+    const user = await User.findOne({username}).exec()
+    if (!user) {
+        throw new Error({error: 'Invalid auth credentials'})
+    }
+    const isPasswordMatch = await bcrypt.compare(password, user.password)
+    if (!isPasswordMatch) {
+        throw new Error({error: 'Invalid auth credentials'})
+    }
+    return user
+};
 
 UserSchema.methods.generateAuthToken = async function () {
     // Generate an auth token for the user
-    const user = this
-    const token = jwt.sign({_id: user._id}, config.secret)
+    const user = this;
     // user.tokens = user.tokens.concat({ token })
     // await user.save()
-    return token
+    return jwt.sign({_id: user._id}, config.secret)
 }
 
 const User = mongoose.model("User", UserSchema);

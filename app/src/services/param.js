@@ -4,8 +4,9 @@ const APIHOST = HOST + "/api";
 export default {
     HOST,
     auth: {
-        signin: HOST + "/auth/signin",
-        signup: HOST + "/auth/signup",
-        checkToken: HOST + "/auth/check",
+        signin: APIHOST + "/auth/signin",
+        signup: APIHOST + "/auth/signup",
+        guest_login: APIHOST + "/auth/guest_login",
+        checkToken: APIHOST + "/auth/check",
     }
 }

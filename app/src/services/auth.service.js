@@ -1,7 +1,5 @@
 import axios from "axios";
-
 import param from "./param"
-
 import AuthHeader from "./auth-header"
 
 const register = (username, email, password, passwordRepeat) => {
@@ -11,6 +9,17 @@ const register = (username, email, password, passwordRepeat) => {
         password,
         passwordRepeat
     });
+};
+
+const guest_login = (username) => {
+    return axios.post(param.auth.guest_login, {
+        username
+    }).then((response) => {
+        console.log(response)
+        if (response.data.token) {
+            localStorage.setItem("user", JSON.stringify(response.data))
+        }
+    })
 };
 
 const login = (email, password) => {
@@ -52,6 +61,7 @@ const checkToken = (redirectLogin = true) => {
 export default {
     register,
     login,
+    guest_login,
     logout,
     getCurrentUser,
     checkToken,

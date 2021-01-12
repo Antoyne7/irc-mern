@@ -5,12 +5,17 @@ import Login from './pages/auth/login'
 import Register from "./pages/auth/register";
 import NewChannel from "./pages/channel/new-channel";
 import Channels from "./pages/channel/channel";
+import LoginGuest from "./pages/auth/login_guest"
+import React from "react";
 
 function App() {
     return (
         <div className="App">
             <Switch>
-                <Route exact path={["/", "/login"]}>
+                <Route exact path={["/", "/login_guest"]}>
+                    <LoginGuest/>
+                </Route>
+                <Route path="/login">
                     <Login/>
                 </Route>
                 <Route path="/register">

@@ -7,11 +7,19 @@ const BUTTON_THEMES = [
     "secondary"
 ]
 
-const Button = ({children, onClick = null, theme = "primary"}) => {
+
+const Button = ({children, onClick = null, borderOnly = false, theme = "primary"}) => {
+
+    const handleClick = (evt) => {
+        if (onClick) {
+            onClick(evt)
+        }
+    };
+
     return (
         <button
-            onClick={(evt) => onClick(evt)}
-            className={"Button " + theme}
+            onClick={(evt) => handleClick(evt)}
+            className={`Button ${borderOnly ? "border-only" : ""} ${theme}`}
         >
             {children}
         </button>
