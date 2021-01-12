@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./auth.styles.scss"
 import Input from "../../components/input/input";
 import {Link} from "react-router-dom";
@@ -6,6 +6,10 @@ import Button from "../../components/button/button";
 import AuthService from "../../services/auth.service"
 
 const Register = () => {
+    useEffect(() => {
+        AuthService.checkToken(false);
+    }, [])
+
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")

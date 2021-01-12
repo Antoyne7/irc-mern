@@ -55,6 +55,14 @@ router.post('/auth/signin',
     }
 })
 
+router.get('/auth/check',
+    [middlewares.auth.verifyToken],
+    (req, res) => {
+        // Check user authenticated
+        res.status(200).send()
+    })
+
+
 /*
 router.get('/users', async (req, res) => {
     try {
