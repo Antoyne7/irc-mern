@@ -1,4 +1,4 @@
-import React, {useState, useHi} from "react";
+import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
 
 import "./auth.styles.scss"
@@ -32,7 +32,7 @@ const Login = () => {
             () => {
                 // TODO: redirect
                 console.log("Redirect page", AuthService.getCurrentUser())
-                history.push("/main");
+                history.push("/home");
             },
             (error) => {
                 const resMessage =

@@ -2,7 +2,7 @@ import React from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
 
-const channel = () => {
+const Channel = () => {
     return (
         <div className="channel-content-container">
             <div className="title-container container">
@@ -63,4 +63,4 @@ const channel = () => {
     )
 };
 
-export default channel
+export default Channel
