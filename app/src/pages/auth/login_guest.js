@@ -21,7 +21,7 @@ const LoginGuest = () => {
             () => {
                 // TODO: redirect
                 console.log("Redirect page", AuthService.getCurrentUser())
-                history.push("/home");
+                history.push("/channels/add");
             },
             (error) => {
                 const resMessage =
@@ -30,7 +30,6 @@ const LoginGuest = () => {
                         error.response.data.message) ||
                     error.message ||
                     error.toString();
-
             }
         );
     };

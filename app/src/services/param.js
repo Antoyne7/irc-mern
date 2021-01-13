@@ -10,6 +10,7 @@ export default {
         checkToken: APIHOST + "/auth/check",
     },
     channel: {
-        add: APIHOST + "/channel/add"
+        add: APIHOST + "/channel/add",
+        get: APIHOST + "/channel/get"
     }
 }

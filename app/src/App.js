@@ -26,7 +26,7 @@ function App() {
                     <Route path="/channels/new">
                         <NewChannel/>
                     </Route>
-                    <Route path="/channels/:channel">
+                    <Route path={["/channels/:channel", "/home"]} >
                         <Channels/>
                     </Route>
                 </Switch>
