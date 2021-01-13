@@ -21,7 +21,7 @@ const Menu = ({selected = 0}) => {
                 </svg>
             </div>
 
-            <div className={`profile ${selected === 2 ? "active" : ""}`}>
+            <div onClick={() => goTo("/profile")} className={`profile ${selected === 2 ? "active" : ""}`}>
                 <svg className="icon-profile" width="27" height="29" viewBox="0 0 27 29" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path

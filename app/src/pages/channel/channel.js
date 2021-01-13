@@ -12,7 +12,7 @@ const Channels = () => {
     useEffect(() => {
         if (location.state) {
             console.log(location.state.channel)
-            axios.get()
+            // axios.get()
         }
     }, []);
     return (
