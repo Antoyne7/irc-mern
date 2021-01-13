@@ -11,6 +11,6 @@ export default {
     },
     channel: {
         add: APIHOST + "/channel/add",
-        get: APIHOST + "/channel/get"
+        get: APIHOST + "/channel/get?channel="
     }
 }

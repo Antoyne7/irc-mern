@@ -34,20 +34,20 @@ const CreateChannel = () => {
         e.preventDefault();
         const user = JSON.parse(localStorage.getItem("user"));
         const username = user.user.username;
+        const slug = name;
 
         axios.post(param.channel.add,
-            {name, password, passwordRepeat, username}, {headers: authHeader()})
+            {name, slug, password, passwordRepeat, username}, {headers: authHeader()})
             .then((response) => {
                 console.log(response);
                 //TODO: ajouter une animation à la fin de l'ajout
                 history.push({
-                    pathname: '/channels/' + response.data.channel,
-                    state: {channel: response.data.channel}
+                    pathname: '/channels/' + response.data.slug,
+                    state: {channel: response.data.slug}
                 })
             }).catch(e => {
             console.log(e)
-        })
-
+        });
         console.log("cool", name, password, passwordRepeat)
 
     };
