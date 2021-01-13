@@ -1,5 +1,8 @@
 import React from "react";
-import "./channel.styles.scss"
+import "./profile.style.scss"
+
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrash} from '@fortawesome/free-solid-svg-icons'
 
 import Navigation from "../navigation/navigation";
 import Button from "../button/button";
@@ -8,7 +11,7 @@ import Input from "../input/input"
 const Profile = () => {
 
     return (
-        <div className="channel-content-container">
+        <div className="Profile">
             <div className="title-container container">
                 <h2>Profil</h2>
             </div>
@@ -19,7 +22,7 @@ const Profile = () => {
                         Vos informations
                     </h3>
 
-                    del
+                    <FontAwesomeIcon icon={faTrash} color={"var(--red)"}/>
                 </div>
 
                 <div className="profile-picture">
@@ -39,9 +42,11 @@ const Profile = () => {
                     placeholder="Ancien mot de passe"
                 />
             </form>
-            <Button>
-                Enregistrer
-            </Button>
+            <div className="button-container">
+                <Button>
+                    Enregistrer
+                </Button>
+            </div>
         </div>
     )
 };

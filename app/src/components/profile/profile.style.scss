@@ -1,0 +1,30 @@
+.Profile {
+  padding-top: 16px;
+
+  form {
+
+    background-color: var(--background-bis);
+    padding: 0 10px;
+    border-radius: 6px;
+    margin: 20px 20px 0;
+
+    .form-title {
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 16px 6px 20px;
+      justify-content: space-between;
+      h3 {
+        margin: 0;
+      }
+    }
+
+    input {
+      background-color: var(--background);
+    }
+  }
+
+  .button-container {
+    padding: 20px 20px 0;
+  }
+}

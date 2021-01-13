@@ -7,30 +7,34 @@ import NewChannel from "./pages/channel/new-channel";
 import Channels from "./pages/channel/channel";
 import LoginGuest from "./pages/auth/login_guest"
 import React from "react";
+import Profile from "./pages/profile/profile";
 
 
 function App() {
 
     return (
-            <div className="App">
-                <Switch>
-                    <Route exact path={["/", "/login_guest"]}>
-                        <LoginGuest/>
-                    </Route>
-                    <Route path="/login">
-                        <Login/>
-                    </Route>
-                    <Route path="/register">
-                        <Register/>
-                    </Route>
-                    <Route path="/channels/new">
-                        <NewChannel/>
-                    </Route>
-                    <Route path={["/channels/:channel", "/home"]} >
-                        <Channels/>
-                    </Route>
-                </Switch>
-            </div>
+        <div className="App">
+            <Switch>
+                <Route exact path={["/", "/login_guest"]}>
+                    <LoginGuest/>
+                </Route>
+                <Route path="/login">
+                    <Login/>
+                </Route>
+                <Route path="/register">
+                    <Register/>
+                </Route>
+                <Route path="/profile">
+                    <Profile/>
+                </Route>
+                <Route path="/channels/new">
+                    <NewChannel/>
+                </Route>
+                <Route path={["/channels/:channel", "/home"]}>
+                    <Channels/>
+                </Route>
+            </Switch>
+        </div>
     );
 }
 
