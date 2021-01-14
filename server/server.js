@@ -24,10 +24,16 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true}));
 
+
 //Run quand qqn se connecte
 io.on('connection', socket => {
     console.log('New WebSocket connection');
     socket.emit('message', "Bonjour espèce de beau gosse")
+
+    io.on('join', socket => {
+        console.log("data", socket)
+        // socket.emit('message', "Quelqu'un a rejoint la room")
+    });
 });
 
 
