@@ -5,6 +5,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faUser} from '@fortawesome/free-solid-svg-icons'
 
 import "./searchChannel.style.scss"
+import axios from "axios";
+import param from "../../services/param";
 
 const SERVERS = [
     {
@@ -41,9 +43,17 @@ const SERVERS = [
 
 const SearchChannel = () => {
     const [name, setName] = useState("")
+    const [channels, setChannels] = useState([]);
 
     const onChangeName = (e) => {
         const name = e.target.value;
+        if (name.length >= 3) {
+            axios.get(param.channel.search + name + "&maxresp=" + 3).then((response) => {
+                console.log(response)
+            }).catch(e => {
+                console.log(e)
+            })
+        }
         setName(name);
     };
 

@@ -18,7 +18,18 @@ checkDuplicatedName = (req, res, next) => {
         next();
     })
 };
+checkInvalidCharacter = (req, res, next) => {
+    let cityreg=/^[^*?¤$%@!^¨µ£°=+}{'"~&/-]+$/;
+    if (!req.body.name.match(cityreg)){
+        console.log("ereur")
+        res.status(403).send({message: "Illegal character found in the channel name"});
+        return;
+    }
+    next()
+
+}
 const verifySignUp = {
     checkDuplicatedName,
+    checkInvalidCharacter
 };
 module.exports = verifySignUp;

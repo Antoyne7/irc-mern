@@ -43,7 +43,7 @@ const CreateChannel = () => {
                 //TODO: ajouter une animation à la fin de l'ajout
                 history.push({
                     pathname: '/channels/' + response.data.slug,
-                    state: {channel: response.data.slug}
+                    state: {slug: response.data.slug}
                 })
             }).catch(e => {
             console.log(e)
@@ -62,7 +62,7 @@ const CreateChannel = () => {
                     onChange={onChangeName}
                 />
                 <Input
-                    placeholder="Mot de passe"
+                    placeholder="Mot de passe (optionnel)"
                     name="channel-password"
                     type="password"
                     value={password}

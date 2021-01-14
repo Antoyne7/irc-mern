@@ -7,10 +7,14 @@ const ChannelSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     password: {
         type: String,
         required: false,
-        minLength: 4
     },
     picture: {
         type: String,
@@ -35,6 +39,10 @@ const ChannelSchema = new mongoose.Schema({
         }
     ]
 });
+ChannelSchema.index({
+    name: 'text'
+});
+
 
 ChannelSchema.pre("save", async function (next) {
     // Hash the password before saving the user model

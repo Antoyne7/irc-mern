@@ -47,7 +47,6 @@ router.post('/auth/signin',
     async (req, res) => {
         // Login a registered user
         try {
-            console.log("yo");
             const {email, password} = req.body;
             const user = await User.findByCredentials(email, password);
             if (!user) {

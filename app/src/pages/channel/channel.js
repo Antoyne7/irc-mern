@@ -14,8 +14,8 @@ const Channels = () => {
 
     useEffect(() => {
         if (location.state) {
-            console.log(location.state.channel);
-            axios.get(param.channel.get + location.state.channel,
+            console.log("state",location.state.slug);
+            axios.get(param.channel.get + location.state.slug,
                 {headers: authHeader()}
                 )
                 .then((res) => {
