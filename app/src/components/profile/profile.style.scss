@@ -2,11 +2,44 @@
   padding-top: 16px;
 
   form {
-
     background-color: var(--background-bis);
     padding: 0 10px;
     border-radius: 6px;
     margin: 20px 20px 0;
+
+    .profile-picture-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+
+      .profile-picture {
+        width: 160px;
+        height: 160px;
+        border-radius: 100px;
+        background-color: var(--background);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
+      }
+
+      label {
+        position: absolute;
+        opacity: .5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 160px;
+        height: 160px;
+        border-radius: 100px;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+      input {
+        display: none;
+      }
+    }
 
     .form-title {
       display: flex;
