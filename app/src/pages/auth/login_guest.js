@@ -23,7 +23,7 @@ const LoginGuest = () => {
             () => {
                 // TODO: redirect
                 console.log("Redirect page", AuthService.getCurrentUser())
-                history.push("/channels/new");
+                history.push("/home");
             },
             (error) => {
                 const resMessage =

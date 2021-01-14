@@ -23,10 +23,13 @@ function App() {
                     <Route path="/register">
                         <Register/>
                     </Route>
-                    <Route path="/channels/new">
+                    <Route path="/new-channel">
                         <NewChannel/>
                     </Route>
-                    <Route path={["/channels/:channel", "/home"]} >
+                    <Route path={"/home"}>
+
+                    </Route>
+                    <Route path={["/channels/:channel"]} >
                         <Channels/>
                     </Route>
                 </Switch>

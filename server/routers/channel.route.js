@@ -73,12 +73,9 @@ router.get("/channel/search", [
     ],
     async (req, res) => {
         if (req.query.search.length >= 3) {
-            let finalChannels = [];
-            try {
-                let channelResult = [];
-                await Channel.find(
-                    {name: {$regex: req.query.search, $options: "i"}},
-                    {limit: 20},
+            new Promise((resolve, reject) => {
+                Channel.find(
+                    {name: {$regex: req.query.search}},
                     (err, chanlist) => {
                         if (err) {
                             console.log(err);
@@ -88,21 +85,14 @@ router.get("/channel/search", [
                         if (max && !isNaN(max) && chanlist.length > max) {
                             chanlist.length = max
                         }
-                        channelResult = chanlist;
+                        resolve(chanlist);
+                        reject(err)
                     });
-                for (const element of channelResult) {
-                    await Channel.findById(element._id, (err, el) => {
-                        if (err) {
-                            console.log(err);
-                            return
-                        }
-                        finalChannels.push(el)
-                    })
-                }
-                res.send(finalChannels)
-            } catch (e) {
-                res.status(400).send(e)
-            }
+            }).then((response) => {
+                return res.send(response)
+            }).catch((err) => {
+                console.log(err)
+            })
 
         }
     }
