@@ -39,10 +39,6 @@ const ChannelSchema = new mongoose.Schema({
         }
     ]
 });
-ChannelSchema.index({
-    name: 'text'
-});
-
 
 ChannelSchema.pre("save", async function (next) {
     // Hash the password before saving the user model

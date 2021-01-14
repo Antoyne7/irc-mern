@@ -14,13 +14,13 @@ const Channels = () => {
 
     useEffect(() => {
         if (location.state) {
-            console.log("state",location.state.slug);
+            console.log("state", location.state.slug);
             axios.get(param.channel.get + location.state.slug,
                 {headers: authHeader()}
-                )
+            )
                 .then((res) => {
-                console.log(res)
-            }).catch(e => {
+                    setChannel(res.data.channel);
+                }).catch(e => {
                 console.log(e)
             })
         }
@@ -28,7 +28,7 @@ const Channels = () => {
     return (
         <Home menuSelected={1}>
             {channel &&
-            <ChannelComponent channel={channel}/>
+            <ChannelComponent channelData={channel}/>
             }
         </Home>
     )

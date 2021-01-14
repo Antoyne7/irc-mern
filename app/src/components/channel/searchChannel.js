@@ -49,27 +49,28 @@ const SearchChannel = () => {
         const name = e.target.value;
         if (name.length >= 3) {
             axios.get(param.channel.search + name + "&maxresp=" + 3).then((response) => {
-                console.log(response)
+                setChannels(response.data)
             }).catch(e => {
                 console.log(e)
             })
+        } else {
+            setChannels([])
         }
         setName(name);
     };
 
     const getServers = () => {
-        return SERVERS.filter(server => server.name.toLowerCase().includes(name.toLowerCase()))
-            .map(server => (
-                <div key={server.name} className="channel-item">
-                    <div className="channel-name">
-                        {server.name}
-                    </div>
-                    <div className="channel-users">
-                        {server.connected}/{server.max_capacity}
-                        <FontAwesomeIcon icon={faUser} color={"var(--primary)"}/>
-                    </div>
+        return channels.map(server => (
+            <div key={server.name} className="channel-item">
+                <div className="channel-name">
+                    {server.name}
                 </div>
-            ))
+                <div className="channel-users">
+                    {server.connected}/{server.max_capacity}
+                    <FontAwesomeIcon icon={faUser} color={"var(--primary)"}/>
+                </div>
+            </div>
+        ))
     }
 
     return (
@@ -82,7 +83,7 @@ const SearchChannel = () => {
                     onChange={onChangeName}
                 />
                 {
-                    name.length > 2 &&
+                    channels &&
                     <div className="channels">
                         {getServers()}
                     </div>

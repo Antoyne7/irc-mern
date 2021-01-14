@@ -53,7 +53,7 @@ router.post('/auth/signin',
                 return res.status(401).send({error: 'Login failed! Check authentication credentials'})
             }
             const token = await user.generateAuthToken();
-            res.send({user, token})
+            res.send({user: {username: user.username, roles: user.roles}, token})
         } catch (error) {
             res.status(400).send(error)
         }
@@ -89,7 +89,7 @@ router.post('/auth/guest_login',
                     return res.status(500).send({message: err});
                 } else {
                     const token = jwt.sign({_id: user._id}, config.secret)
-                    res.send({user, token})
+                    res.send({user: {username: user.username, roles: user.roles}, token})
                 }
             });
 

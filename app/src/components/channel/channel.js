@@ -5,11 +5,11 @@ import io from "socket.io-client"
 import param from "../../services/param";
 
 
-const Channel = () => {
+const Channel = ({channelData}) => {
 
     useEffect(() => {
         const socket = io.connect(param.HOST);
-        socket.on('message', message=> {
+        socket.on('message', message => {
             console.log(message)
         })
     }, []);
@@ -17,7 +17,7 @@ const Channel = () => {
     return (
         <div className="channel-content-container">
             <div className="title-container container">
-                <h2>Gaston's Channel</h2>
+                <h2>{channelData.name}'s Channel</h2>
             </div>
             <div className="channel-message-container">
                 <div className="container">

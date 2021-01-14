@@ -72,24 +72,38 @@ router.get("/channel/search", [
         // middlewares.auth.verifyToken
     ],
     async (req, res) => {
-        try {
-            if (req.query.search.length >= 3)
-            await Channel.find(
-                {name: {$regex: req.query.search, $options: "i"}},
-                {limit: 20},
-                (err, chanlist) => {
-                    if (err) {
-                        console.log(err);
-                        return
-                    }
-                    let max = req.query.maxresp;
-                    if (max && !isNaN(parseInt(max))) {
-                        chanlist.length = max
-                    }
-                    res.send(chanlist)
-                })
-        } catch (e) {
-            res.status(400).send(e)
+        if (req.query.search.length >= 3) {
+            let finalChannels = [];
+            try {
+                let channelResult = [];
+                await Channel.find(
+                    {name: {$regex: req.query.search, $options: "i"}},
+                    {limit: 20},
+                    (err, chanlist) => {
+                        if (err) {
+                            console.log(err);
+                            return
+                        }
+                        let max = parseInt(req.query.maxresp);
+                        if (max && !isNaN(max) && chanlist.length > max) {
+                            chanlist.length = max
+                        }
+                        channelResult = chanlist;
+                    });
+                for (const element of channelResult) {
+                    await Channel.findById(element._id, (err, el) => {
+                        if (err) {
+                            console.log(err);
+                            return
+                        }
+                        finalChannels.push(el)
+                    })
+                }
+                res.send(finalChannels)
+            } catch (e) {
+                res.status(400).send(e)
+            }
+
         }
     }
 );
