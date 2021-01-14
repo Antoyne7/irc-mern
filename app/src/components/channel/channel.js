@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
-import io from "socket.io-client"
-import param from "../../services/param";
+import {connection} from "../../providers/socketio_provider";
+
 
 
 const Channel = ({channelData}) => {
 
     useEffect(() => {
-        const socket = io.connect(param.HOST);
-        socket.on('message', message => {
+        const io = connection();
+        io.on('message', message => {
             console.log(message)
         })
     }, []);

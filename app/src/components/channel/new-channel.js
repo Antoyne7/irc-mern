@@ -14,10 +14,10 @@ const NewChannelComponent = () => {
                 <h2>Ajouter un salon</h2>
             </div>
             <Navigation />
-            <ListItem text="Créer un nouveau salon" icon="add">
+            <ListItem height="320px" text="Créer un nouveau salon" icon="add">
                 <CreateChannel />
             </ListItem>
-            <ListItem text="Rechercher un salon" icon="search" height="500px">
+            <ListItem text="Rechercher un salon" icon="search" height="300px">
                 <SearchChannel />
             </ListItem>
         </div>
