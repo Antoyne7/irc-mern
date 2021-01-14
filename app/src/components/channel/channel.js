@@ -1,23 +1,63 @@
 import React, {useState, useEffect} from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
-import {initiateSocket} from "../../providers/socketio_provider";
+import {initiateSocket, socket} from "../../providers/socketio_provider";
 
 
 const Channel = ({channelData}) => {
 
+    const [messageFeed, setMessageFeed] = useState([]);
+
     const [message, setMessage] = useState("");
 
+
     useEffect(() => {
-        initiateSocket(channelData);
+        const user = JSON.parse(localStorage.getItem("user"));
+        initiateSocket(channelData, user.user.username);
+        socket.on("message", (msg) => {
+            console.log(msg)
+        });
+        socket.on("userJoin", (sentence) => {
+            console.log(sentence);
+            setMessageFeed((oldValue) => {
+                return [...oldValue, joinMessageTemplate(sentence)]
+            });
+        });
+
+        socket.on("userLeft", (sentence) => {
+            console.log(sentence)
+        })
     }, []);
+
+    const joinMessageTemplate = (message) => {
+        return (
+            <div className="context-message">
+                {message}
+            </div>
+        )
+    };
+
+    const messageTemplate = (message) => {
+        return (
+            <div className="message">
+                <Picture size="56px"/>
+                <div className="container-info">
+                    <div className="userinfo">
+                        <span>Diablox9</span>
+                        <span className="date">04/01/2020 à 19h20</span>
+                    </div>
+                    <div className="text">Salut c’est moi diablox9</div>
+                </div>
+            </div>
+        )
+    };
 
     const writeMessage = (e) => {
         setMessage(e.target.value)
     };
     const sendMessage = (e) => {
         e.preventDefault();
-        
+
         setMessage("");
     };
 
@@ -30,19 +70,7 @@ const Channel = ({channelData}) => {
             <div className="channel-message-container">
                 <div className="container">
                     <div className="messages-container">
-                        <div className="message">
-                            <Picture size="56px"/>
-                            <div className="container-info">
-                                <div className="userinfo">
-                                    <span>Diablox9</span>
-                                    <span className="date">04/01/2020 à 19h20</span>
-                                </div>
-                                <div className="text">Salut c’est moi diablox9</div>
-                            </div>
-                        </div>
-                        <div className="context-message">
-                            Delphine est rentré dans le channel
-                        </div>
+                        {messageFeed}
                     </div>
                 </div>
             </div>

@@ -1,15 +1,17 @@
 import io from 'socket.io-client';
 import param from "../services/param";
 
-let socket;
-export const initiateSocket = (channel) => {
+export let socket;
+
+export const initiateSocket = (channel, username) => {
     socket = io(param.HOST);
     console.log(`Connecting socket...`);
     if (socket && channel) {
-        console.log("Emitting...");
-        socket.emit('join', channel.name)
+        socket.emit('join', channel.name, username)
     }
+
 };
+
 export const disconnectSocket = () => {
     console.log('Disconnecting socket...');
     if (socket) socket.disconnect();

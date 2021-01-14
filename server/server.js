@@ -28,14 +28,21 @@ app.use(express.urlencoded({extended: true}));
 //Run quand qqn se connecte
 io.on('connection', socket => {
     console.log('New WebSocket connection');
-    socket.emit('message', "Bonjour espèce de beau gosse")
 
-    io.on('join', socket => {
-        console.log("data", socket)
-        // socket.emit('message', "Quelqu'un a rejoint la room")
+    socket.on("join", (data, username) => {
+        console.log("qqn rejoint !")
+        io.emit('userJoin', username + " a rejoint le chat");
     });
-});
 
+    socket.on('disconnect', () => {
+        io.emit('userLeft', "Un utilisateur a quitté le chat");
+        socket.disconnect()
+    });
+
+    socket.on('chatMessage', (msg) => {
+        io.emit('message', msg)
+    })
+});
 
 // Connect to Database
 require("./database");

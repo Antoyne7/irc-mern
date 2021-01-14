@@ -51,11 +51,9 @@ router.get("/channel/get", [
     ],
     async (req, res) => {
         try {
-            console.log(req.query.channel);
             await Channel.findOne({
                 slug: req.query.channel
             }, (err, resp) => {
-                console.log(resp);
                 if (err) {
                     console.log(err);
                     return
