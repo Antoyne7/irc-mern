@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
-import {connection} from "../../providers/socketio_provider";
-import {io} from "socket.io-client";
+import {initiateSocket} from "../../providers/socketio_provider";
 
 
 const Channel = ({channelData}) => {
@@ -10,10 +9,7 @@ const Channel = ({channelData}) => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const io = connection();
-        io.on('message', message => {
-            console.log(message)
-        })
+        initiateSocket(channelData);
     }, []);
 
     const writeMessage = (e) => {
@@ -29,7 +25,7 @@ const Channel = ({channelData}) => {
     return (
         <div className="channel-content-container">
             <div className="title-container container">
-                <h2>Gaston's Channel</h2>
+                <h2>{channelData.name}'s Channel</h2>
             </div>
             <div className="channel-message-container">
                 <div className="container">
