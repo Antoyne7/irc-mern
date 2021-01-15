@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
-import {initiateSocket, socket} from "../../providers/socketio_provider";
+import {initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
 
 
 const Channel = ({channelData}) => {
@@ -10,13 +10,17 @@ const Channel = ({channelData}) => {
 
     const [message, setMessage] = useState("");
 
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        initiateSocket(channelData, user.user.username);
+        const userTemp = JSON.parse(localStorage.getItem("user"));
+        setUser(userTemp);
+        initiateSocket(channelData, userTemp.user.username);
+
         socket.on("message", (msg) => {
             console.log(msg)
         });
+
         socket.on("userJoin", (sentence) => {
             console.log(sentence);
             setMessageFeed((oldValue) => {
@@ -24,9 +28,17 @@ const Channel = ({channelData}) => {
             });
         });
 
+        socket.on("chatMessage", (sentence, user) => {
+            console.log("retour : ", sentence, user)
+            setMessageFeed((oldValue) => {
+                return [...oldValue, messageTemplate(sentence, user)]
+            });
+        })
+
         socket.on("userLeft", (sentence) => {
             console.log(sentence)
         })
+
     }, []);
 
     const joinMessageTemplate = (message) => {
@@ -37,16 +49,16 @@ const Channel = ({channelData}) => {
         )
     };
 
-    const messageTemplate = (message) => {
+    const messageTemplate = (message, user) => {
         return (
             <div className="message">
                 <Picture size="56px"/>
                 <div className="container-info">
                     <div className="userinfo">
-                        <span>Diablox9</span>
+                        <span>{user.user.username}</span>
                         <span className="date">04/01/2020 à 19h20</span>
                     </div>
-                    <div className="text">Salut c’est moi diablox9</div>
+                    <div className="text">{message}</div>
                 </div>
             </div>
         )
@@ -54,10 +66,11 @@ const Channel = ({channelData}) => {
 
     const writeMessage = (e) => {
         setMessage(e.target.value)
+        console.log(e.target.value)
     };
     const sendMessage = (e) => {
         e.preventDefault();
-
+        socketSendMessage(channelData, message, user)
         setMessage("");
     };
 

@@ -29,15 +29,20 @@ app.use(express.urlencoded({extended: true}));
 io.on('connection', socket => {
     console.log('New WebSocket connection');
 
-    socket.on("join", (data, username) => {
-        console.log("qqn rejoint !")
+    socket.on("join", (room, username) => {
         io.emit('userJoin', username + " a rejoint le chat");
     });
+
+    socket.on('chat', (message, room, user) => {
+        console.log(message, user)
+        io.emit('chatMessage', message, user)
+    })
 
     socket.on('disconnect', () => {
         io.emit('userLeft', "Un utilisateur a quitté le chat");
         socket.disconnect()
     });
+
 
     socket.on('chatMessage', (msg) => {
         io.emit('message', msg)
