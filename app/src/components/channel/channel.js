@@ -90,7 +90,7 @@ const Channel = ({channelData}) => {
             <div className="input-container">
                 <div className="container">
                     <form onSubmit={(e) => sendMessage(e)} className="input-msg">
-                        <input onChange={(e) => writeMessage(e)} value={message} placeholder="Message..."/>
+                        <textarea onChange={(e) => writeMessage(e)} value={message} placeholder="Message..."/>
                         <div className="icons-container">
                             <svg className="mic" width="15" height="23" viewBox="0 0 15 23" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
