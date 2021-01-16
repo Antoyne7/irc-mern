@@ -1,6 +1,7 @@
 const authRoutes = require("./auth.routes");
 const testRoutes = require("./test.routes");
 const channelRoutes = require("./channel.route")
+const userRoutes = require("./user.routes")
 
 const express = require("express");
 const router = express.Router();
@@ -19,6 +20,7 @@ module.exports = function(app) {
     router.use(authRoutes);
     router.use(testRoutes);
     router.use(channelRoutes);
+    router.use(userRoutes);
 
     // Base path
     app.use('/api', router)

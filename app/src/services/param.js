@@ -12,5 +12,9 @@ export default {
     channel: {
         add: APIHOST + "/channel/add",
         get: APIHOST + "/channel/get"
+    },
+    user: {
+        picture: APIHOST + "/profile/picture",
+        profile: APIHOST + "/profile",
     }
 }

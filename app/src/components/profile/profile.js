@@ -7,6 +7,9 @@ import {faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
 import Navigation from "../navigation/navigation";
 import Button from "../button/button";
 import Input from "../input/input"
+import axios from "axios";
+import param from "../../services/param";
+import authHeader from "../../services/auth-header";
 
 const Profile = () => {
     const pictureInput = useRef()
@@ -41,11 +44,32 @@ const Profile = () => {
     const onChangePicture = (e) => {
         setPicture(e.target.files[0]);
         setPicturePreview(URL.createObjectURL(e.target.files[0]));
+
+        const formData = new FormData();
+        formData.append('picture', e.target.files[0]);
+        axios.post(param.user.picture,
+            formData,
+            { headers: authHeader()},
+        ).then(response => {
+            console.log("response:", response)
+        })
+            .catch(err => console.log("error:", err))
     };
 
     const handleSubmit = () => {
-        const data = new FormData();
-        data.append('picture', picture);
+        if (picture) {
+            const data = new FormData();
+            data.append('picture', picture);
+            axios.post(param.user.picture,
+                data,
+                { headers: authHeader()},
+            ).then(response => {
+                    console.log("response:", response)
+                })
+                .catch(err => console.log("error:", err))
+        }
+
+
 
         console.log("picture", picture)
         console.log("username", username)
@@ -60,7 +84,7 @@ const Profile = () => {
                 <h2>Profil</h2>
             </div>
             <Navigation/>
-            <form>
+            <form encType="multipart/form-data">
                 <div className="form-title">
                     <h3>
                         Vos informations
@@ -76,7 +100,7 @@ const Profile = () => {
                     <label htmlFor="profile-picture">
                         <FontAwesomeIcon icon={faEdit} size="2x" color="var(--contrast-projet)"/>
                     </label>
-                    <input ref={pictureInput} id="profile-picture" type="file" onChange={onChangePicture}/>
+                    <input ref={pictureInput} name="file" id="profile-picture" type="file" onChange={(evt) => onChangePicture(evt)}/>
                 </div>
 
                 <Input

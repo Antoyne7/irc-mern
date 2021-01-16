@@ -9,26 +9,32 @@ const router = express.Router()
 
 // Multer file storage
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'assets')
+    destination: function (req, file, callback) {
+        callback(null, 'uploads/users-pictures')
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' +file.originalname)
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + '-'+ file.originalname)
     }
 })
-const upload = multer({ storage }).single('file')
 
+const upload = multer({storage})
 
 router.post('/profile/picture',
+    [middlewares.auth.verifyToken, upload.single('picture')],
     async (req, res) => {
-        // Login a registered user
+        // Save picture
         try {
-            const {email, password} = req.body;
-            const user = await User.findByCredentials(email, password);
-            // TODO: Obtenir user à partir du middleware
+            // console.log("req:", req)
 
+            console.log("req.picture:", req.picture)
 
-            res.send({user, token})
+           /* upload(req, res, (err) => {
+                if (err) {
+                    res.sendStatus(500);
+                }
+                res.send(req.file);
+            });*/
+            res.status(200).send({message: "Enregistré avec succes"})
         } catch (error) {
             res.status(400).send(error)
         }
@@ -37,16 +43,16 @@ router.post('/profile/picture',
 router.get('/profile',
     [middlewares.auth.verifyToken],
     (req, res) => {
-    // View logged in user profile
-    try {
-        res.send({user})
-        const user = {
-            name: req.user.name,
-            email: req.user.email
+        // View logged in user profile
+        try {
+            res.send({user})
+            const user = {
+                name: req.user.name,
+                email: req.user.email
+            }
+        } catch (e) {
+            res.status(400).send(req.body + ' ; error : ' + e)
         }
-    } catch (e) {
-        res.status(400).send(req.body + ' ; error : ' + e)
-    }
-})
+    })
 
 module.exports = router
