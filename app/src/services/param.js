@@ -12,7 +12,8 @@ const param = {
     },
     channel: {
         add: APIHOST + "/channel/add",
-        get: APIHOST + "/channel/get"
+        get: APIHOST + "/channel/get?channel=",
+        search: APIHOST + "/channel/search?search="
     },
     user: {
         picture: APIHOST + "/profile/picture",

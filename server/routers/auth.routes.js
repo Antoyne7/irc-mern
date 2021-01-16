@@ -47,14 +47,13 @@ router.post('/auth/signin',
     async (req, res) => {
         // Login a registered user
         try {
-            console.log("yo");
             const {email, password} = req.body;
             const user = await User.findByCredentials(email, password);
             if (!user) {
                 return res.status(401).send({error: 'Login failed! Check authentication credentials'})
             }
             const token = await user.generateAuthToken();
-            res.send({user, token})
+            res.send({user: {username: user.username, roles: user.roles}, token})
         } catch (error) {
             res.status(400).send(error)
         }
@@ -90,7 +89,7 @@ router.post('/auth/guest_login',
                     return res.status(500).send({message: err});
                 } else {
                     const token = jwt.sign({_id: user._id}, config.secret)
-                    res.send({user, token})
+                    res.send({user: {username: user.username, roles: user.roles}, token})
                 }
             });
 

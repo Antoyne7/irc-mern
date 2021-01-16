@@ -11,8 +11,7 @@ const Menu = ({selected = 0}) => {
 
     return (
         <div className="menu">
-
-            <div className={`select ${selected === 1 ? "active" : ""}`}>
+            <div onClick={()=> goTo("/home")} className={`select ${selected === 1 ? "active" : ""}`}>
                 <svg className="icon-select" width="39" height="28" viewBox="0 0 39 28" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd"
@@ -30,7 +29,7 @@ const Menu = ({selected = 0}) => {
                 </svg>
 
             </div>
-            <div onClick={() => goTo("/channels/new")} className={`add ${selected === 3 ? "active" : ""}`}>
+            <div onClick={() => goTo("/new-channel")} className={`add ${selected === 3 ? "active" : ""}`}>
                 <svg className="icon-add" width="27" height="29" viewBox="0 0 27 29" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path

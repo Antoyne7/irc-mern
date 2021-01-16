@@ -14,6 +14,8 @@ const LoginGuest = () => {
     const changeUsername = (evt) => {
         setUsername(evt.target.value);
     };
+
+    
     const createAccount = (evt) => {
         evt.preventDefault();
 
@@ -21,7 +23,7 @@ const LoginGuest = () => {
             () => {
                 // TODO: redirect
                 console.log("Redirect page", AuthService.getCurrentUser())
-                history.push("/channels/add");
+                history.push("/home");
             },
             (error) => {
                 const resMessage =

@@ -7,10 +7,14 @@ const ChannelSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     password: {
         type: String,
         required: false,
-        minLength: 4
     },
     picture: {
         type: String,

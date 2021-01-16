@@ -125,14 +125,16 @@
     margin: 0;
   }
 
-  input {
+  textarea {
     width: 100%;
     background: var(--background-bis);
     height: 50px;
-    padding: 0 15px;
+    padding: 5px 15px;
     border: none;
     border-radius: 4px;
     color: var(--contrast-projet);
+    font-family: 'Lato', sans-serif;
+    resize: none;
 
     &:focus {
 
@@ -142,9 +144,12 @@
   .input-msg {
     display: flex;
     position: relative;
+    //background: var(--background-bis);
+    border-radius: 4px;
+    align-items: center;
 
     .icons-container {
-      position: absolute;
+      //position: absolute;
       right: 0;
       display: flex;
       justify-content: center;
