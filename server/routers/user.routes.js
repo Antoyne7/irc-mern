@@ -1,5 +1,6 @@
 const express = require('express')
 const multer = require('multer')
+const bcrypt = require("bcryptjs")
 
 const User = require('../models/user.model')
 const Role = require('../models/role.model')
@@ -13,46 +14,60 @@ const storage = multer.diskStorage({
         callback(null, 'uploads/users-pictures')
     },
     filename: (req, file, callback) => {
-        callback(null, Date.now() + '-'+ file.originalname)
+        callback(null, Date.now() + '-' + file.originalname)
     }
 })
 
-const upload = multer({storage})
+const upload = multer({ storage })
 
+// Update user picture
 router.post('/profile/picture',
     [middlewares.auth.verifyToken, upload.single('picture')],
     async (req, res) => {
-        // Save picture
         try {
-            // console.log("req:", req)
+            console.log("req.file:", req.file)
+            console.log("req.connectedUser:", req.connectedUser)
 
-            console.log("req.picture:", req.picture)
-
-           /* upload(req, res, (err) => {
+            req.connectedUser.picture = req.file.filename
+            await req.connectedUser.save(err => {
                 if (err) {
-                    res.sendStatus(500);
+                    res.status(500).send({ message: err });
+                    return;
                 }
-                res.send(req.file);
-            });*/
-            res.status(200).send({message: "Enregistré avec succes"})
+                res.status(201).send({ message: "L'avatar à été enregistré avec succès!" });
+            });
         } catch (error) {
             res.status(400).send(error)
         }
     });
 
-router.get('/profile',
+// Update user
+router.post('/profile',
     [middlewares.auth.verifyToken],
-    (req, res) => {
-        // View logged in user profile
-        try {
-            res.send({user})
-            const user = {
-                name: req.user.name,
-                email: req.user.email
+    async (req, res) => {
+        req.connectedUser.username = req.body.username
+        if (req.body.password.length > 0) {
+            console.log('0')
+            if (req.body.password !== req.body.passwordRepeat) {
+                res.status(500).send({ message: "Les mots de passe ne correspondent pas." });
+                return;
             }
-        } catch (e) {
-            res.status(400).send(req.body + ' ; error : ' + e)
+
+            if (!bcrypt.compareSync(req.body.oldPassword, req.connectedUser.password)) {
+                res.status(500).send({ message: "Votre mot de passe est incorrect." });
+                return;
+            }
+
+            req.connectedUser.password = req.body.password
         }
+
+        await req.connectedUser.save(err => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            res.status(200).send({ message: "Profil mis à jour." });
+        });
     })
 
 module.exports = router

@@ -38,6 +38,12 @@ const UserSchema = new mongoose.Schema({
             ref: "Channel"
         }
     ],
+    picture: {
+        type: String,
+        required: false,
+        trim: true,
+        unique: false
+    },
     roles: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -54,7 +60,6 @@ UserSchema.pre("save", async function (next) {
     }
     next()
 })
-
 
 UserSchema.statics.findByCredentials = async (username, password) => {
     // Search for a user by email and password.

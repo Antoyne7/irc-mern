@@ -11,11 +11,15 @@ import axios from "axios";
 import param from "../../services/param";
 import authHeader from "../../services/auth-header";
 
+import UserService from "../../services/user"
+
 const Profile = () => {
     const pictureInput = useRef()
 
+    // getUser
+
     const [picture, setPicture] = useState(null);
-    const [picturePreview, setPicturePreview] = useState(null);
+    const [picturePreview, setPicturePreview] = useState(UserService.getPicture({picture: 'zeze'}));
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
@@ -52,26 +56,22 @@ const Profile = () => {
             { headers: authHeader()},
         ).then(response => {
             console.log("response:", response)
-        })
-            .catch(err => console.log("error:", err))
+        }).catch(err => console.log("error:", err))
     };
 
     const handleSubmit = () => {
-        if (picture) {
-            const data = new FormData();
-            data.append('picture', picture);
-            axios.post(param.user.picture,
-                data,
-                { headers: authHeader()},
-            ).then(response => {
-                    console.log("response:", response)
-                })
-                .catch(err => console.log("error:", err))
-        }
+        axios.post(param.user.profile,
+            {
+                username,
+                password,
+                passwordRepeat,
+                oldPassword
+            },
+            { headers: authHeader()},
+        ).then(response => {
+            console.log("response:", response)
+        }).catch(err => console.log("error:", err))
 
-
-
-        console.log("picture", picture)
         console.log("username", username)
         console.log("password", password)
         console.log("passwordRepeat", passwordRepeat)
@@ -95,7 +95,7 @@ const Profile = () => {
 
                 <div className="profile-picture-container">
                     <div className="profile-picture">
-                        {picturePreview && <img src={picturePreview} alt="Profile picture"/>}
+                        {picturePreview && <img src={picturePreview} alt="Profile"/>}
                     </div>
                     <label htmlFor="profile-picture">
                         <FontAwesomeIcon icon={faEdit} size="2x" color="var(--contrast-projet)"/>
@@ -109,7 +109,7 @@ const Profile = () => {
                     onChange={onChangeUsername}
                 />
                 <Input
-                    placeholder="Mot de passe"
+                    placeholder="Nouveau mot de passe"
                     type="password"
                     value={password}
                     onChange={onChangePassword}

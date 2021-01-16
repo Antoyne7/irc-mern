@@ -1,8 +1,9 @@
 const HOST = "http://localhost:8080";
 const APIHOST = HOST + "/api";
 
-export default {
+const param = {
     HOST,
+    uploads: "/uploads",
     auth: {
         signin: APIHOST + "/auth/signin",
         signup: APIHOST + "/auth/signup",
@@ -18,3 +19,5 @@ export default {
         profile: APIHOST + "/profile",
     }
 }
+
+export default param;
