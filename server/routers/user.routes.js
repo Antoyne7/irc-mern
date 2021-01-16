@@ -25,8 +25,7 @@ router.post('/profile/picture',
     [middlewares.auth.verifyToken, upload.single('picture')],
     async (req, res) => {
         try {
-            console.log("req.file:", req.file)
-            console.log("req.connectedUser:", req.connectedUser)
+            // TODO: delete old picture
 
             req.connectedUser.picture = req.file.filename
             await req.connectedUser.save(err => {

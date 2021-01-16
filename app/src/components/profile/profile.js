@@ -1,8 +1,8 @@
-import React, {useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import "./profile.style.scss"
 
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
 import Navigation from "../navigation/navigation";
 import Button from "../button/button";
@@ -10,16 +10,14 @@ import Input from "../input/input"
 import axios from "axios";
 import param from "../../services/param";
 import authHeader from "../../services/auth-header";
-
 import UserService from "../../services/user"
+import AuthService from "../../services/auth.service"
 
 const Profile = () => {
     const pictureInput = useRef()
 
-    // getUser
-
     const [picture, setPicture] = useState(null);
-    const [picturePreview, setPicturePreview] = useState(UserService.getPicture({picture: 'zeze'}));
+    const [picturePreview, setPicturePreview] = useState(UserService.getPicture(AuthService.getCurrentUser));
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
@@ -53,7 +51,7 @@ const Profile = () => {
         formData.append('picture', e.target.files[0]);
         axios.post(param.user.picture,
             formData,
-            { headers: authHeader()},
+            { headers: authHeader() },
         ).then(response => {
             console.log("response:", response)
         }).catch(err => console.log("error:", err))
@@ -67,7 +65,7 @@ const Profile = () => {
                 passwordRepeat,
                 oldPassword
             },
-            { headers: authHeader()},
+            { headers: authHeader() },
         ).then(response => {
             console.log("response:", response)
         }).catch(err => console.log("error:", err))
@@ -83,24 +81,24 @@ const Profile = () => {
             <div className="title-container container">
                 <h2>Profil</h2>
             </div>
-            <Navigation/>
+            <Navigation />
             <form encType="multipart/form-data">
                 <div className="form-title">
                     <h3>
                         Vos informations
                     </h3>
 
-                    <FontAwesomeIcon icon={faTrash} color={"var(--red)"}/>
+                    <FontAwesomeIcon icon={faTrash} color={"var(--red)"} />
                 </div>
 
                 <div className="profile-picture-container">
                     <div className="profile-picture">
-                        {picturePreview && <img src={picturePreview} alt="Profile"/>}
+                        {picturePreview && <img src={picturePreview} alt="Profile" />}
                     </div>
                     <label htmlFor="profile-picture">
-                        <FontAwesomeIcon icon={faEdit} size="2x" color="var(--contrast-projet)"/>
+                        <FontAwesomeIcon icon={faEdit} size="2x" color="var(--contrast-projet)" />
                     </label>
-                    <input ref={pictureInput} name="file" id="profile-picture" type="file" onChange={(evt) => onChangePicture(evt)}/>
+                    <input ref={pictureInput} name="file" id="profile-picture" type="file" onChange={(evt) => onChangePicture(evt)} />
                 </div>
 
                 <Input
