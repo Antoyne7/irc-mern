@@ -77,7 +77,6 @@ const Channel = ({channelData}) => {
         setMessage("");
     };
 
-
     return (
         <div className="channel-content-container">
             <div className="title-container container">

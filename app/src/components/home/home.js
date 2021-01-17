@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import useUser from '../../services/use-user'
 
 const Home = ({ children, menuSelected = 0 }) => {
-    const history = useHistory();
+    const history = useHistory()
     const userState = useUser()
 
     useEffect(() => {

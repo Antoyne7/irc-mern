@@ -38,13 +38,15 @@ const Sidebar = ({ channels }) => {
                         <span>{channel.users.length} personnes connectés</span>
                     </div>
                 </div>
-                {/* <hr /> */}
+                <hr />
             </div>
         )
     }
 
     const onClickChannel = (slug) => {
-        history.push('/channels/' + slug)
+        history.push({
+            pathname: '/channels/' + slug
+        })
     }
 
     return (

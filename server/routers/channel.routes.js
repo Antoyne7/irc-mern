@@ -111,6 +111,8 @@ router.post("/channel/connect",
                 return
             }
 
+            console.log(req.body)
+
             if (req.connectedUser.channels.includes(channel._id)) {
                 res.status(200).send({message: "Vous faites déjà partie de ce salon"})
                 return
@@ -120,10 +122,11 @@ router.post("/channel/connect",
 
             req.connectedUser.channels.push(channel._id)            
             channel.users.push(req.connectedUser._id)
-            
+
             await req.connectedUser.save()
             await channel.save()
-
+            
+            res.status(200).send({message: "Connecté à ce salon avec succès!"})
         } catch (e) {
             res.status(400).send(e)
         }

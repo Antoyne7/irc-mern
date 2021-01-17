@@ -39,13 +39,12 @@ const SearchChannel = () => {
             { headers: authHeader() }
         ).then((response) => {
             console.log("ajout channel: ", response);
+            history.push({
+                pathname: '/channels/' + slug,
+                state: { slug: slug }
+            })
         }).catch(e => {
             console.log("ajout channel: ERREUR:", e)
-        })
-
-        history.push({
-            pathname: '/channels/' + slug,
-            state: { slug: slug }
         })
     };
 
