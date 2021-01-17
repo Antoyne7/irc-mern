@@ -21,7 +21,7 @@ const Channel = ({channelData}) => {
             console.log(sentence);
             setMessageFeed((oldValue) => {
                 return [...oldValue, joinMessageTemplate(sentence)]
-            });
+            })
         });
 
         socket.on("userLeft", (sentence) => {
