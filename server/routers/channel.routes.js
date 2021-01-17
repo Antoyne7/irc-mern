@@ -66,7 +66,7 @@ router.get("/channel/get",
 )
 
 router.get("/channel/search",
-    // [middlewares.auth.verifyToken],
+    [middlewares.auth.verifyToken],
     async (req, res) => {
         if (req.query.search.length >= 3) {
             new Promise((resolve, reject) => {

@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
+const Message = require('./models/channel.model');
 const socketio = require("socket.io");
 const app = express();
 
@@ -9,6 +10,15 @@ const corsOptions = {
 };
 
 const server = http.createServer(app);
+
+// Connect to Database
+require("./database");
+
+// Use routes
+require("./routers")(app);
+
+//Socket IO
+require("./socketio");
 
 const io = socketio(server, {
     cors: {
@@ -32,34 +42,20 @@ io.on('connection', socket => {
     console.log('New WebSocket connection');
 
     socket.on("join", (room, username) => {
-        socket.join(room)
+        socket.join(room);
         io.to(room).emit('userJoin', username + " a rejoint le chat");
     });
 
-    socket.on('chat', (message, room, user) => {
-        console.log(message, user?.username, " | room: " + room.name)
+    socket.on('chat', (message, room, {user}) => {
+        console.log(message, user.username, " | room: " + room.name);
         io.to(room.name).emit('chatMessage', message, user)
-    })
+    });
 
     socket.on('disconnect', () => {
         io.emit('userLeft', "Un utilisateur a quitté le chat");
         socket.disconnect()
     });
-
-
-    socket.on('chatMessage', (msg) => {
-        io.emit('message', msg)
-    })
 });
-
-// Connect to Database
-require("./database");
-
-// Use routes
-require("./routers")(app);
-
-//Socket IO
-require("./socketio");
 
 
 // Start listening

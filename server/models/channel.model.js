@@ -41,7 +41,7 @@ const ChannelSchema = new mongoose.Schema({
 });
 
 ChannelSchema.pre("save", async function (next) {
-    // Hash the password before saving the user model
+    // Hash the password before saving the channel model
     const channel = this;
     if (channel.isModified("password")) {
         channel.password = await bcrypt.hash(channel.password, 8)

@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
-import {initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
+import {disconnectSocket, initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
+import useUser from "../../services/use-user";
 
 
 const Channel = ({channelData}) => {
+    const userState = useUser();
+
     const [messageFeed, setMessageFeed] = useState([]);
 
     const [message, setMessage] = useState("");
@@ -13,12 +16,10 @@ const Channel = ({channelData}) => {
 
     useEffect(() => {
         const userTemp = JSON.parse(localStorage.getItem("user"));
+        console.log(userState);
         setUser(userTemp);
         initiateSocket(channelData, userTemp.user.username);
 
-        socket.on("message", (msg) => {
-            console.log("YA UN MESSAGE LA:", msg)
-        });
 
         socket.on("userJoin", (sentence) => {
             console.log(sentence);
@@ -28,21 +29,21 @@ const Channel = ({channelData}) => {
         });
 
         socket.on("chatMessage", (sentence, user) => {
-            console.log("retour : ", sentence, user)
+            console.log("retour : ", sentence, user);
             setMessageFeed((oldValue) => {
                 return [...oldValue, messageTemplate(sentence, user)]
             });
-        })
+        });
 
         socket.on("userLeft", (sentence) => {
             console.log(sentence)
-        })
+        });
 
         return () => {
-            socket.disconnect();
+            disconnectSocket();
         }
 
-    }, []);
+    }, [userState]);
 
     const joinMessageTemplate = (message) => {
         return (
@@ -58,7 +59,7 @@ const Channel = ({channelData}) => {
                 <Picture size="56px"/>
                 <div className="container-info">
                     <div className="userinfo">
-                        <span>{user.user.username}</span>
+                        <span>{user.username}</span>
                         <span className="date">04/01/2020 à 19h20</span>
                     </div>
                     <div className="text">{message}</div>
