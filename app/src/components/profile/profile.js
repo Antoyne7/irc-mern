@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./profile.style.scss"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,13 +11,19 @@ import axios from "axios";
 import param from "../../services/param";
 import authHeader from "../../services/auth-header";
 import UserService from "../../services/user"
-import AuthService from "../../services/auth.service"
+import useUser from "../../services/use-user";
 
 const Profile = () => {
     const pictureInput = useRef()
+    const userState = useUser();
+
+    useEffect(() => {
+        setPicturePreview(UserService.getPicture(userState.user))
+        setUsername(userState.user?.username)
+    }, [userState])
 
     const [picture, setPicture] = useState(null);
-    const [picturePreview, setPicturePreview] = useState(UserService.getPicture(AuthService.getCurrentUser));
+    const [picturePreview, setPicturePreview] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
@@ -69,11 +75,6 @@ const Profile = () => {
         ).then(response => {
             console.log("response:", response)
         }).catch(err => console.log("error:", err))
-
-        console.log("username", username)
-        console.log("password", password)
-        console.log("passwordRepeat", passwordRepeat)
-        console.log("oldPassword", oldPassword)
     }
 
     return (

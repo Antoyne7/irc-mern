@@ -8,7 +8,6 @@ const config = require("../config/auth.config")
 
 const router = express.Router()
 
-
 router.post('/auth/signup', [
     middlewares.signup.checkRolesExisted,
     middlewares.signup.checkDuplicateUsernameOrEmail
@@ -100,11 +99,14 @@ router.post('/auth/guest_login',
     }
 );
 
+// Check user authenticated, return user w/o password
 router.get('/auth/check',
     [middlewares.auth.verifyToken],
     (req, res) => {
-        // Check user authenticated
-        res.status(200).send()
+        const user = req.connectedUser
+        user.password = ""
+        
+        res.status(200).send(user);
     })
 
 module.exports = router

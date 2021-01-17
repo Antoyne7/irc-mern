@@ -24,6 +24,8 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true}));
 
+// serve static files
+app.use(express.static(__dirname + "/uploads"))
 
 //Run quand qqn se connecte
 io.on('connection', socket => {

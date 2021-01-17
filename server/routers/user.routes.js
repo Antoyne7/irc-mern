@@ -1,9 +1,8 @@
 const express = require('express')
 const multer = require('multer')
 const bcrypt = require("bcryptjs")
+const fs = require('fs')
 
-const User = require('../models/user.model')
-const Role = require('../models/role.model')
 const middlewares = require('../middlewares')
 
 const router = express.Router()
@@ -25,7 +24,11 @@ router.post('/profile/picture',
     [middlewares.auth.verifyToken, upload.single('picture')],
     async (req, res) => {
         try {
-            // TODO: delete old picture
+            const oldPicturePath =
+                __dirname + '/../uploads/users-pictures/' + req.connectedUser.picture
+            if (fs.existsSync(oldPicturePath)) {
+                fs.unlinkSync(oldPicturePath)
+            }
 
             req.connectedUser.picture = req.file.filename
             await req.connectedUser.save(err => {

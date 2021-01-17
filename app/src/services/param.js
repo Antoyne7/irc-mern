@@ -3,7 +3,6 @@ const APIHOST = HOST + "/api";
 
 const param = {
     HOST,
-    uploads: "/uploads",
     auth: {
         signin: APIHOST + "/auth/signin",
         signup: APIHOST + "/auth/signup",
