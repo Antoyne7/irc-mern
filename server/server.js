@@ -24,20 +24,27 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true}));
 
+// serve static files
+app.use(express.static(__dirname + "/uploads"))
 
 //Run quand qqn se connecte
 io.on('connection', socket => {
     console.log('New WebSocket connection');
 
-    socket.on("join", (data, username) => {
-        console.log("qqn rejoint !")
+    socket.on("join", (room, username) => {
         io.emit('userJoin', username + " a rejoint le chat");
     });
+
+    socket.on('chat', (message, room, user) => {
+        console.log(message, user)
+        io.emit('chatMessage', message, user)
+    })
 
     socket.on('disconnect', () => {
         io.emit('userLeft', "Un utilisateur a quitté le chat");
         socket.disconnect()
     });
+
 
     socket.on('chatMessage', (msg) => {
         io.emit('message', msg)

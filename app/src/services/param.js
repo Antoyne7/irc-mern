@@ -1,7 +1,7 @@
 const HOST = "http://localhost:8080";
 const APIHOST = HOST + "/api";
 
-export default {
+const param = {
     HOST,
     auth: {
         signin: APIHOST + "/auth/signin",
@@ -13,5 +13,11 @@ export default {
         add: APIHOST + "/channel/add",
         get: APIHOST + "/channel/get?channel=",
         search: APIHOST + "/channel/search?search="
+    },
+    user: {
+        picture: APIHOST + "/profile/picture",
+        profile: APIHOST + "/profile",
     }
 }
+
+export default param;

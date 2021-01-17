@@ -1,6 +1,7 @@
 .Navigation {
   display: flex;
   justify-content: space-between;
+  margin-top: 4px;
 
   a.back {
     text-decoration: none;
@@ -9,7 +10,7 @@
     color: var(--primary-clair);
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 20px;
 
     img {
       margin-right: 6px;
