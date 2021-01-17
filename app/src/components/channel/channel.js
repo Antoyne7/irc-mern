@@ -5,7 +5,6 @@ import {initiateSocket, socket, socketSendMessage} from "../../providers/socketi
 
 
 const Channel = ({channelData}) => {
-
     const [messageFeed, setMessageFeed] = useState([]);
 
     const [message, setMessage] = useState("");
@@ -18,7 +17,7 @@ const Channel = ({channelData}) => {
         initiateSocket(channelData, userTemp.user.username);
 
         socket.on("message", (msg) => {
-            console.log(msg)
+            console.log("YA UN MESSAGE LA:", msg)
         });
 
         socket.on("userJoin", (sentence) => {
@@ -38,6 +37,10 @@ const Channel = ({channelData}) => {
         socket.on("userLeft", (sentence) => {
             console.log(sentence)
         })
+
+        return () => {
+            socket.disconnect();
+        }
 
     }, []);
 
@@ -66,8 +69,8 @@ const Channel = ({channelData}) => {
 
     const writeMessage = (e) => {
         setMessage(e.target.value)
-        console.log(e.target.value)
     };
+
     const sendMessage = (e) => {
         e.preventDefault();
         socketSendMessage(channelData, message, user)

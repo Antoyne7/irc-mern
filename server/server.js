@@ -32,12 +32,13 @@ io.on('connection', socket => {
     console.log('New WebSocket connection');
 
     socket.on("join", (room, username) => {
-        io.emit('userJoin', username + " a rejoint le chat");
+        socket.join(room)
+        io.to(room).emit('userJoin', username + " a rejoint le chat");
     });
 
     socket.on('chat', (message, room, user) => {
-        console.log(message, user)
-        io.emit('chatMessage', message, user)
+        console.log(message, user?.username, " | room: " + room.name)
+        io.to(room.name).emit('chatMessage', message, user)
     })
 
     socket.on('disconnect', () => {

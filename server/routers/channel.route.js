@@ -4,12 +4,11 @@ const router = express.Router();
 const Channel = require('../models/channel.model');
 const User = require('../models/user.model');
 
-//Route
 router.post("/channel/add", [
-        middlewares.channel.checkDuplicatedName,
-        middlewares.channel.checkInvalidCharacter,
-        middlewares.auth.verifyToken
-    ],
+    middlewares.channel.checkDuplicatedName,
+    middlewares.channel.checkInvalidCharacter,
+    middlewares.auth.verifyToken
+],
     async (req, res) => {
         try {
             const channel = new Channel({
@@ -38,27 +37,25 @@ router.post("/channel/add", [
                     console.log(err)
                     return;
                 }
-                res.send({message: "Channel was saved successfully!", channel: channel.name, slug: channel.slug});
+                res.send({ message: "Channel was saved successfully!", channel: channel.name, slug: channel.slug });
             })
         } catch (e) {
             res.status(400).send(e)
         }
     });
 
-
-router.get("/channel/get", [
-        middlewares.auth.verifyToken
-    ],
+router.get("/channel/get",
+    [middlewares.auth.verifyToken],
     async (req, res) => {
         try {
             await Channel.findOne({
                 slug: req.query.channel
             }, (err, resp) => {
                 if (err) {
-                    console.log(err);
+                    res.status(500).send({ error: err })
                     return
                 }
-                res.send({channel: resp})
+                res.send({ channel: resp })
             })
         } catch (e) {
             res.status(400).send(e)
@@ -66,14 +63,13 @@ router.get("/channel/get", [
     }
 )
 
-router.get("/channel/search", [
-        // middlewares.auth.verifyToken
-    ],
+router.get("/channel/search",
+    // [middlewares.auth.verifyToken],
     async (req, res) => {
         if (req.query.search.length >= 3) {
             new Promise((resolve, reject) => {
                 Channel.find(
-                    {name: {$regex: req.query.search}},
+                    { name: { $regex: req.query.search } },
                     (err, chanlist) => {
                         if (err) {
                             console.log(err);
@@ -91,16 +87,17 @@ router.get("/channel/search", [
             }).catch((err) => {
                 console.log(err)
             })
-
         }
     }
 );
 
-router.post("/channel/message", [middlewares.auth.verifyToken], (req, res) => {
-    res.json(
-        {}
-    )
-});
+router.post("/channel/message",
+    [middlewares.auth.verifyToken],
+    (req, res) => {
+        res.json(
+            {}
+        )
+    });
 
 const slugify = (string) => {
     const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/,:;'
