@@ -1,6 +1,6 @@
 const authRoutes = require("./auth.routes");
 const testRoutes = require("./test.routes");
-const channelRoutes = require("./channel.route")
+const channelRoutes = require("./channel.routes")
 const userRoutes = require("./user.routes")
 
 const express = require("express");

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import Home from "../../components/home/home";
 import ChannelComponent from "../../components/channel/channel"
@@ -14,21 +14,20 @@ const Channels = () => {
 
     useEffect(() => {
         if (location.state) {
-            console.log("state", location.state.slug);
             axios.get(param.channel.get + location.state.slug,
-                {headers: authHeader()}
+                { headers: authHeader() }
             )
                 .then((res) => {
                     setChannel(res.data.channel);
                 }).catch(e => {
-                console.log(e)
-            })
+                    console.log(e)
+                })
         }
     }, []);
     return (
         <Home menuSelected={1}>
             {channel &&
-            <ChannelComponent channelData={channel}/>
+                <ChannelComponent channelData={channel} />
             }
         </Home>
     )

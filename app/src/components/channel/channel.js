@@ -5,7 +5,6 @@ import {initiateSocket, socket, socketSendMessage} from "../../providers/socketi
 
 
 const Channel = ({channelData}) => {
-
     const [messageFeed, setMessageFeed] = useState([]);
 
     const [message, setMessage] = useState("");
@@ -18,7 +17,7 @@ const Channel = ({channelData}) => {
         initiateSocket(channelData, userTemp.user.username);
 
         socket.on("message", (msg) => {
-            console.log(msg)
+            console.log("YA UN MESSAGE LA:", msg)
         });
 
         socket.on("userJoin", (sentence) => {
@@ -39,11 +38,15 @@ const Channel = ({channelData}) => {
             console.log(sentence)
         })
 
+        return () => {
+            socket.disconnect();
+        }
+
     }, []);
 
     const joinMessageTemplate = (message) => {
         return (
-            <div className="context-message">
+            <div key={message} className="context-message">
                 {message}
             </div>
         )
@@ -51,7 +54,7 @@ const Channel = ({channelData}) => {
 
     const messageTemplate = (message, user) => {
         return (
-            <div className="message">
+            <div key={message} className="message">
                 <Picture size="56px"/>
                 <div className="container-info">
                     <div className="userinfo">
@@ -66,14 +69,13 @@ const Channel = ({channelData}) => {
 
     const writeMessage = (e) => {
         setMessage(e.target.value)
-        console.log(e.target.value)
     };
+
     const sendMessage = (e) => {
         e.preventDefault();
         socketSendMessage(channelData, message, user)
         setMessage("");
     };
-
 
     return (
         <div className="channel-content-container">

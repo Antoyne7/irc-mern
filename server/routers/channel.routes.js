@@ -1,15 +1,15 @@
 const express = require('express');
+const { Mongoose } = require('mongoose');
 const middlewares = require('../middlewares')
 const router = express.Router();
 const Channel = require('../models/channel.model');
 const User = require('../models/user.model');
 
-//Route
 router.post("/channel/add", [
-        middlewares.channel.checkDuplicatedName,
-        middlewares.channel.checkInvalidCharacter,
-        middlewares.auth.verifyToken
-    ],
+    middlewares.channel.checkDuplicatedName,
+    middlewares.channel.checkInvalidCharacter,
+    middlewares.auth.verifyToken
+],
     async (req, res) => {
         try {
             const channel = new Channel({
@@ -38,42 +38,40 @@ router.post("/channel/add", [
                     console.log(err)
                     return;
                 }
-                res.send({message: "Channel was saved successfully!", channel: channel.name, slug: channel.slug});
+                res.send({ message: "Channel was saved successfully!", channel: channel.name, slug: channel.slug });
             })
         } catch (e) {
             res.status(400).send(e)
         }
     });
 
-
-router.get("/channel/get", [
-        middlewares.auth.verifyToken
-    ],
+router.get("/channel/get",
+    [middlewares.auth.verifyToken],
     async (req, res) => {
         try {
-            await Channel.findOne({
-                slug: req.query.channel
-            }, (err, resp) => {
-                if (err) {
-                    console.log(err);
-                    return
-                }
-                res.send({channel: resp})
-            })
-        } catch (e) {
-            res.status(400).send(e)
+            let channel;
+            channel = await Channel.findOne({slug: req.query.channel}).exec()
+            if (!channel) { // recherche par ID également
+                channel = await Channel.findOne({_id: req.query.channel}).exec()
+            }
+            if (!channel) {
+                res.status(500).send({ error: "Aucun salon trouvé..." })
+                return
+            }
+            res.status(200).send({ channel })
+        } catch (error) {
+            res.status(400).send(error)
         }
     }
 )
 
-router.get("/channel/search", [
-        // middlewares.auth.verifyToken
-    ],
+router.get("/channel/search",
+    // [middlewares.auth.verifyToken],
     async (req, res) => {
         if (req.query.search.length >= 3) {
             new Promise((resolve, reject) => {
                 Channel.find(
-                    {name: {$regex: req.query.search}},
+                    { name: { $regex: req.query.search } },
                     (err, chanlist) => {
                         if (err) {
                             console.log(err);
@@ -91,16 +89,48 @@ router.get("/channel/search", [
             }).catch((err) => {
                 console.log(err)
             })
-
         }
     }
 );
 
-router.post("/channel/message", [middlewares.auth.verifyToken], (req, res) => {
-    res.json(
-        {}
-    )
-});
+router.post("/channel/message",
+    [middlewares.auth.verifyToken],
+    (req, res) => {
+        res.json(
+            {}
+        )
+    });
+
+router.post("/channel/connect", 
+    [middlewares.auth.verifyToken],
+    async (req, res) => {
+        try {
+            const channel = await Channel.findOne({slug: req.body.slug}).exec()
+            if (!channel) {
+                res.status(500).send({error: "Le salon n'a pas été trouvé..."})
+                return
+            }
+
+            console.log(req.body)
+
+            if (req.connectedUser.channels.includes(channel._id)) {
+                res.status(200).send({message: "Vous faites déjà partie de ce salon"})
+                return
+            }
+
+            // TODO: Si channel mot de passe -> bcrypt.compareSync(req.body.password, channel.password)
+
+            req.connectedUser.channels.push(channel._id)            
+            channel.users.push(req.connectedUser._id)
+
+            await req.connectedUser.save()
+            await channel.save()
+            
+            res.status(200).send({message: "Connecté à ce salon avec succès!"})
+        } catch (e) {
+            res.status(400).send(e)
+        }
+    });
 
 const slugify = (string) => {
     const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/,:;'

@@ -11,6 +11,7 @@ const param = {
     },
     channel: {
         add: APIHOST + "/channel/add",
+        connect: APIHOST + "/channel/connect",
         get: APIHOST + "/channel/get?channel=",
         search: APIHOST + "/channel/search?search="
     },
