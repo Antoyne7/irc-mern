@@ -1,4 +1,5 @@
 const express = require('express');
+const { Mongoose } = require('mongoose');
 const middlewares = require('../middlewares')
 const router = express.Router();
 const Channel = require('../models/channel.model');
@@ -48,17 +49,18 @@ router.get("/channel/get",
     [middlewares.auth.verifyToken],
     async (req, res) => {
         try {
-            await Channel.findOne({
-                slug: req.query.channel
-            }, (err, resp) => {
-                if (err) {
-                    res.status(500).send({ error: err })
-                    return
-                }
-                res.send({ channel: resp })
-            })
-        } catch (e) {
-            res.status(400).send(e)
+            let channel;
+            channel = await Channel.findOne({slug: req.query.channel}).exec()
+            if (!channel) { // recherche par ID également
+                channel = await Channel.findOne({_id: req.query.channel}).exec()
+            }
+            if (!channel) {
+                res.status(500).send({ error: "Aucun salon trouvé..." })
+                return
+            }
+            res.status(200).send({ channel })
+        } catch (error) {
+            res.status(400).send(error)
         }
     }
 )
@@ -97,6 +99,34 @@ router.post("/channel/message",
         res.json(
             {}
         )
+    });
+
+router.post("/channel/connect", 
+    [middlewares.auth.verifyToken],
+    async (req, res) => {
+        try {
+            const channel = await Channel.findOne({slug: req.body.slug}).exec()
+            if (!channel) {
+                res.status(500).send({error: "Le salon n'a pas été trouvé..."})
+                return
+            }
+
+            if (req.connectedUser.channels.includes(channel._id)) {
+                res.status(200).send({message: "Vous faites déjà partie de ce salon"})
+                return
+            }
+
+            // TODO: Si channel mot de passe -> bcrypt.compareSync(req.body.password, channel.password)
+
+            req.connectedUser.channels.push(channel._id)            
+            channel.users.push(req.connectedUser._id)
+            
+            await req.connectedUser.save()
+            await channel.save()
+
+        } catch (e) {
+            res.status(400).send(e)
+        }
     });
 
 const slugify = (string) => {

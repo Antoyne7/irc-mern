@@ -46,7 +46,7 @@ const Channel = ({channelData}) => {
 
     const joinMessageTemplate = (message) => {
         return (
-            <div className="context-message">
+            <div key={message} className="context-message">
                 {message}
             </div>
         )
@@ -54,7 +54,7 @@ const Channel = ({channelData}) => {
 
     const messageTemplate = (message, user) => {
         return (
-            <div className="message">
+            <div key={message} className="message">
                 <Picture size="56px"/>
                 <div className="container-info">
                     <div className="userinfo">
