@@ -22,7 +22,6 @@ const Profile = () => {
         setUsername(userState.user?.username)
     }, [userState])
 
-    const [picture, setPicture] = useState(null);
     const [picturePreview, setPicturePreview] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -50,7 +49,6 @@ const Profile = () => {
     };
 
     const onChangePicture = (e) => {
-        setPicture(e.target.files[0]);
         setPicturePreview(URL.createObjectURL(e.target.files[0]));
 
         const formData = new FormData();
