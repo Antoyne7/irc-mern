@@ -52,7 +52,9 @@ const LoginGuest = () => {
                 <hr/>
             </div>
             <div className="buttons-container">
-                <Button borderOnly={true}>Se connecter</Button>
+                <Link to={"/login"}>
+                    <Button onClick={null} borderOnly={true}>Se connecter</Button>
+                </Link>
                 <Link to={"/register"}>
                     <Button onClick={null} borderOnly={true}>S'inscrire</Button>
                 </Link>
