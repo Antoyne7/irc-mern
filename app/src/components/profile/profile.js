@@ -13,6 +13,7 @@ import authHeader from "../../services/auth-header";
 import UserService from "../../services/user"
 import useUser from "../../services/use-user";
 import SuccessAlert from "../alert/success-alert";
+import ThemeToggleButton from "../button/theme-toggle-button";
 
 const Profile = () => {
     const pictureInput = useRef()
@@ -93,6 +94,11 @@ const Profile = () => {
                 <h2>Profil</h2>
             </div>
             <Navigation />
+
+            <div className="theme-button-container">
+                <ThemeToggleButton />
+            </div>
+
             <form encType="multipart/form-data">
                 <div className="form-title">
                     <h3>

@@ -7,6 +7,19 @@
     border-radius: 6px;
     margin: 20px 20px 0;
 
+    .form-title {
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 16px 6px 20px;
+      justify-content: space-between;
+
+      h3 {
+        margin: 0;
+        color: var(--contrast-projet);
+      }
+    }
+
     .profile-picture-container {
       position: relative;
       display: flex;
@@ -50,20 +63,15 @@
       }
     }
 
-    .form-title {
-      display: flex;
-      align-items: center;
-      color: white;
-      padding: 16px 6px 20px;
-      justify-content: space-between;
-      h3 {
-        margin: 0;
-      }
-    }
-
     input {
       background-color: var(--background);
     }
+  }
+
+  .theme-button-container {
+    position: absolute;
+    top: 26px;
+    right: 20px;
   }
 
   .button-container {
