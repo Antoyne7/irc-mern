@@ -13,17 +13,20 @@ const Channels = () => {
     const [channel, setChannel] = useState(null);
 
     useEffect(() => {
-        if (location.state) {
-            axios.get(param.channel.get + location.state.slug,
-                { headers: authHeader() }
-            )
-                .then((res) => {
-                    setChannel(res.data.channel);
-                }).catch(e => {
-                    console.log(e)
-                })
+        const getChannelSlug = () => {
+            return location.pathname.split('/channels/')[1]
         }
-    }, []);
+
+        axios.get(param.channel.get + getChannelSlug(),
+            { headers: authHeader() }
+        )
+            .then((res) => {
+                setChannel(res.data.channel);
+            }).catch(e => {
+                console.log(e)
+            })
+    }, [location.pathname]);
+
     return (
         <Home menuSelected={1}>
             {channel &&

@@ -12,6 +12,7 @@ const Channel = ({channelData}) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
+        setMessageFeed([])
         const userTemp = JSON.parse(localStorage.getItem("user"));
         setUser(userTemp);
         initiateSocket(channelData, userTemp.user.username);
@@ -42,11 +43,11 @@ const Channel = ({channelData}) => {
             socket.disconnect();
         }
 
-    }, []);
+    }, [channelData]);
 
     const joinMessageTemplate = (message) => {
         return (
-            <div key={message} className="context-message">
+            <div key={message + Date.now()} className="context-message">
                 {message}
             </div>
         )

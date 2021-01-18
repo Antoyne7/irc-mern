@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../sidebar/sidebar";
 import Menu from "../menu/menu"
 import "./home.style.scss"
@@ -9,12 +9,24 @@ import useUser from '../../services/use-user'
 const Home = ({ children, menuSelected = 0 }) => {
     const history = useHistory()
     const userState = useUser()
+    const [isMobile, setIsMobile] = useState(true)
+
+    useEffect(() => {
+        function handleResize() {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        window.addEventListener('resize', handleResize)
+
+        setIsMobile(window.innerWidth <= 768)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
 
     useEffect(() => {
         if (!userState.isLoading && !userState.user) {
-            history.push({
-                pathname: '/'
-            })
+            history.push('/')
         }
     }, [userState, history])
 
@@ -22,7 +34,9 @@ const Home = ({ children, menuSelected = 0 }) => {
         (!userState.isLoading &&
             <div className="home">
                 <div className="home-container">
-                    <Sidebar channels={userState.user?.channels} />
+                    {!isMobile && 
+                        <Sidebar channels={userState.user?.channels} />
+                    }
                     <div className="home-content">
                         <div className="content">
                             {children}

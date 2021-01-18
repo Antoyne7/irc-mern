@@ -14,39 +14,38 @@ const Sidebar = ({ channels }) => {
     const [channelList, setChannelList] = useState([])
 
     useEffect(() => {
-        fetchChannels()
-    }, [])
-
-    const fetchChannels = async () => {
-        const channelsTemp = []
-        for (const channel of channels) {
-            await axios.get(param.channel.get + channel, { headers: AuthHeader()})
-                .then((resp) => {
-                    channelsTemp.push(resp.data.channel)
-                })
+        const fetchChannels = async () => {
+            const channelsTemp = []
+            for (const channel of channels) {
+                await axios.get(param.channel.get + channel, { headers: AuthHeader() })
+                    .then((resp) => {
+                        channelsTemp.push(resp.data.channel)
+                    })
+            }
+            setChannelList(channelsTemp)
         }
-        setChannelList(channelsTemp)
-    }
-    
+        fetchChannels()
+    }, [channels])
+
     const renderChannel = (channel) => {
         return (
-            <div key={channel.name} onClick={() => onClickChannel(channel.slug)} className="channel">
-                <div className="channel-content">
-                    <Picture size="62px" />
-                    <div className="text">
-                        <h3>{channel.name}</h3>
-                        <span>{channel.users.length} personnes connectés</span>
+            <React.Fragment key={channel.name}>
+                <div onClick={() => onClickChannel(channel.slug)} className="channel">
+                    <div className="channel-content">
+                        <Picture size="62px" />
+                        <div className="text">
+                            <h3>{channel.name}</h3>
+                            <span>{channel.users.length} personnes connectés</span>
+                        </div>
                     </div>
                 </div>
                 <hr />
-            </div>
+            </React.Fragment>
         )
     }
 
     const onClickChannel = (slug) => {
-        history.push({
-            pathname: '/channels/' + slug
-        })
+        history.push('/channels/' + slug)
     }
 
     return (

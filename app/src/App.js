@@ -37,6 +37,7 @@ function App() {
                     <Channels />
                 </Route>
             </Switch>
+            <div className="alerts" />
         </div>
     );
 }
