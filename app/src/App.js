@@ -37,7 +37,7 @@ function App() {
                     <Channels />
                 </Route>
             </Switch>
-            <div className="alerts" />
+            <div className="modal-container" />
         </div>
     );
 }

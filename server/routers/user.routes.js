@@ -48,6 +48,7 @@ router.post('/profile',
     [middlewares.auth.verifyToken],
     async (req, res) => {
         req.connectedUser.username = req.body.username
+        req.connectedUser.email = req.body.email
         if (req.body.password.length > 0) {
             console.log('0')
             if (req.body.password !== req.body.passwordRepeat) {

@@ -12,6 +12,7 @@ import param from "../../services/param";
 import authHeader from "../../services/auth-header";
 import UserService from "../../services/user"
 import useUser from "../../services/use-user";
+import SuccessAlert from "../alert/success-alert";
 
 const Profile = () => {
     const pictureInput = useRef()
@@ -20,17 +21,25 @@ const Profile = () => {
     useEffect(() => {
         setPicturePreview(UserService.getPicture(userState.user))
         setUsername(userState.user?.username)
+        setEmail(userState.user?.email)
     }, [userState])
 
     const [picturePreview, setPicturePreview] = useState("");
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
     const [oldPassword, setOldPassword] = useState("");
+    const [alertMessage, setAlertMessage] = useState("")
 
     const onChangeUsername = (e) => {
         const username = e.target.value;
         setUsername(username);
+    };
+
+    const onChangeEmail = (e) => {
+        const email = e.target.value;
+        setEmail(email);
     };
 
     const onChangePassword = (e) => {
@@ -65,18 +74,21 @@ const Profile = () => {
         axios.post(param.user.profile,
             {
                 username,
+                email,
                 password,
                 passwordRepeat,
                 oldPassword
             },
             { headers: authHeader() },
-        ).then(response => {
-            console.log("response:", response)
+        ).then(() => {
+            setAlertMessage("Données modifiées !")
         }).catch(err => console.log("error:", err))
     }
 
     return (
         <div className="Profile">
+            {alertMessage !== "" &&
+                <SuccessAlert onClose={() => setAlertMessage("")} message={alertMessage} />}
             <div className="title-container container">
                 <h2>Profil</h2>
             </div>
@@ -87,7 +99,7 @@ const Profile = () => {
                         Vos informations
                     </h3>
 
-                    <FontAwesomeIcon icon={faTrash} color={"var(--red)"} />
+                    <FontAwesomeIcon icon={faTrash} color={"var(--rouge)"} />
                 </div>
 
                 <div className="profile-picture-container">
@@ -104,6 +116,11 @@ const Profile = () => {
                     placeholder="Nom d'utilisateur"
                     value={username}
                     onChange={onChangeUsername}
+                />
+                <Input
+                    placeholder="Email"
+                    value={email}
+                    onChange={onChangeEmail}
                 />
                 <Input
                     placeholder="Nouveau mot de passe"
