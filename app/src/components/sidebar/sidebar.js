@@ -22,6 +22,7 @@ const Sidebar = ({ channels }) => {
         for (const channel of channels) {
             await axios.get(param.channel.get + channel, { headers: AuthHeader()})
                 .then((resp) => {
+                    console.log(resp)
                     channelsTemp.push(resp.data.channel)
                 })
         }

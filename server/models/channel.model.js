@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 const ChannelSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         unique: true,
+        maxlength: 16
     },
     slug: {
         type: String,
@@ -25,12 +26,21 @@ const ChannelSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    messages: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "message",
-        }
-    ],
+    messages: [{
+        message: {
+            type: String,
+            required: true,
+        },
+        date: {
+            type: Date,
+        },
+        user:
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            }
+    }],
 
     users: [
         {

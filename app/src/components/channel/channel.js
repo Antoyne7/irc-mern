@@ -3,6 +3,9 @@ import "./channel.styles.scss"
 import Picture from "../picture/picture"
 import {disconnectSocket, initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
 import useUser from "../../services/use-user";
+import axios from "axios";
+import param from "../../services/param";
+import authHeader from "../../services/auth-header";
 
 
 const Channel = ({channelData}) => {
@@ -12,38 +15,57 @@ const Channel = ({channelData}) => {
 
     const [message, setMessage] = useState("");
 
-    const [user, setUser] = useState(null);
+    const [isFetchingData, setIsFecthingData] = useState(true);
 
     useEffect(() => {
-        const userTemp = JSON.parse(localStorage.getItem("user"));
-        console.log(userState);
-        setUser(userTemp);
-        initiateSocket(channelData, userTemp.user.username);
 
+        if (!userState.isLoading && !userState.isError) {
 
-        socket.on("userJoin", (sentence) => {
-            console.log(sentence);
-            setMessageFeed((oldValue) => {
-                return [...oldValue, joinMessageTemplate(sentence)]
-            })
-        });
-
-        socket.on("chatMessage", (sentence, user) => {
-            console.log("retour : ", sentence, user);
-            setMessageFeed((oldValue) => {
-                return [...oldValue, messageTemplate(sentence, user)]
-            });
-        });
-
-        socket.on("userLeft", (sentence) => {
-            console.log(sentence)
-        });
-
-        return () => {
-            disconnectSocket();
+            //Get channels message
+            axios.get(param.channel.getMessages + "?channel=" + channelData._id, {headers: authHeader()})
+                .then((resp) => {
+                    resp.data.forEach((msg) => {
+                        setMessageFeed((oldValue) => {
+                            return [...oldValue, messageTemplate(msg.message, msg.user)]
+                        })
+                    });
+                    setIsFecthingData(false);
+                })
+                .catch(e => {
+                    console.log(e)
+                });
         }
 
     }, [userState]);
+
+    useEffect(() => {
+            if (!isFetchingData) {
+                initiateSocket(channelData, userState.user.username);
+
+                socket.on("userJoin", (sentence) => {
+                    console.log(sentence);
+                    setMessageFeed((oldValue) => {
+                        return [...oldValue, joinMessageTemplate(sentence)]
+                    })
+                });
+
+                socket.on("chatMessage", (sentence, user) => {
+                    console.log("retour : ", sentence, user);
+                    setMessageFeed((oldValue) => {
+                        return [...oldValue, messageTemplate(sentence, user)]
+                    });
+                });
+
+                socket.on("userLeft", (sentence) => {
+                    console.log(sentence)
+                });
+
+                return () => {
+                    disconnectSocket();
+                }
+            }
+        }, [isFetchingData]
+    )
 
     const joinMessageTemplate = (message) => {
         return (
@@ -74,8 +96,13 @@ const Channel = ({channelData}) => {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        socketSendMessage(channelData, message, user)
-        setMessage("");
+        if (message.length > 0) {
+            socketSendMessage(channelData, message, {
+                _id: userState.user._id,
+                username: userState.user.username,
+            });
+            setMessage("");
+        }
     };
 
     return (
