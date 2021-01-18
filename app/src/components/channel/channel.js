@@ -42,7 +42,14 @@ const Channel = ({channelData}) => {
 
     useEffect(() => {
             if (!isFetchingData) {
-                initiateSocket(channelData, userState.user.username);
+
+                if (window.performance) {
+                    if (performance.navigation.type === 1) {
+                        initiateSocket(channelData, userState.user.username, true);
+                    } else {
+                        initiateSocket(channelData, userState.user.username, false);
+                    }
+                }
 
                 socket.on("userJoin", (sentence) => {
                     console.log(sentence);

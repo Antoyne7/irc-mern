@@ -18,20 +18,24 @@ module.exports = function (server) {
         console.log('New WebSocket connection, ID is ' + socket.id);
 
         socket.on("join", (room, username) => {
-            let userIndex = users.findIndex(user => user.username === username);
-            const userVerif = users[userIndex];
-            if (userIndex > -1) {
-                users.splice(userIndex, 1);
-            }
-            users.push({id: socket.id, username, room, joinTime: dayjs().add(10, 'second')});
+            // let userIndex = users.findIndex(user => user.username === username);
+            // const userVerif = users[userIndex];
+            // if (userIndex > -1) {
+            //     users.splice(userIndex, 1);
+            // }
+            // users.push({id: socket.id, username, room, joinTime: dayjs().add(10, 'second')});
+            // socket.join(room);
+            // if (userVerif) {
+            //     if (userVerif.leftTime.isBefore(dayjs(new Date()))) {
+            //         io.to(room).emit('userJoin', username + " a rejoint le chat");
+            //     }
+            // } else {
+            //     io.to(room).emit('userJoin', username + " a rejoint le chat");
+            // }
+
+            users.push({id: socket.id, username, room});
             socket.join(room);
-            if (userVerif) {
-                if (userVerif.leftTime.isBefore(dayjs(new Date()))) {
-                    io.to(room).emit('userJoin', username + " a rejoint le chat");
-                }
-            } else {
-                io.to(room).emit('userJoin', username + " a rejoint le chat");
-            }
+            io.to(room).emit('userJoin', username + " a rejoint le chat");
         });
 
         socket.on('chat', (message, room, user) => {
@@ -50,16 +54,20 @@ module.exports = function (server) {
         });
 
         socket.on('disconnect', () => {
-            const userIndex = users.findIndex(user => user.id == socket.id);
-            let userLeft = users[userIndex];
+            // const userIndex = users.findIndex(user => user.id == socket.id);
+            // let userLeft = users[userIndex];
+            // if (userLeft) {
+            //     users[userIndex].leftTime = dayjs().add(10, "second");
+            //     if (userLeft.joinTime.isBefore(dayjs(new Date()))) {
+            //         io.to(userLeft.room).emit('userLeft', `${userLeft.username} a quitté le chat.`);
+            //     }
+            // }
+            // socket.disconnect();
+            const userLeft = users.find(user => user.id == socket.id);
             if (userLeft) {
-                users[userIndex].leftTime = dayjs().add(10, "second");
-                if (userLeft.joinTime.isBefore(dayjs(new Date()))) {
-                    io.to(userLeft.room).emit('userLeft', `${userLeft.username} a quitté le chat.`);
-                }
+                io.to(userLeft.room).emit('userLeft', `${userLeft.username} a quitté le chat.`);
             }
             socket.disconnect();
-            console.log("all users : ", users);
         });
     });
 
