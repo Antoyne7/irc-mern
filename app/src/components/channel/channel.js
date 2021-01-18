@@ -17,6 +17,8 @@ const Channel = ({channelData}) => {
 
     const [isFetchingData, setIsFecthingData] = useState(true);
 
+    const [refMessage, setRefMessage] = useState(null);
+
     useEffect(() => {
 
         if (!userState.isLoading && !userState.isError) {
@@ -45,19 +47,27 @@ const Channel = ({channelData}) => {
                 socket.on("userJoin", (sentence) => {
                     console.log(sentence);
                     setMessageFeed((oldValue) => {
-                        return [...oldValue, joinMessageTemplate(sentence)]
-                    })
+                        const key = Date.now();
+                        return [...oldValue, joinMessageTemplate(sentence, key)]
+                    });
+                    if (refMessage) refMessage.scrollIntoView();
                 });
 
                 socket.on("chatMessage", (sentence, user) => {
                     console.log("retour : ", sentence, user);
                     setMessageFeed((oldValue) => {
-                        return [...oldValue, messageTemplate(sentence, user)]
+                        const key = Date.now();
+                        return [...oldValue, messageTemplate(sentence, user, key)]
                     });
+                    if (refMessage) refMessage.scrollIntoView();
                 });
 
                 socket.on("userLeft", (sentence) => {
-                    console.log(sentence)
+                    setMessageFeed((oldValue) => {
+                        const key = Date.now();
+                        return [...oldValue, joinMessageTemplate(sentence, key)]
+                    });
+                    if (refMessage) refMessage.scrollIntoView();
                 });
 
                 return () => {
@@ -67,17 +77,22 @@ const Channel = ({channelData}) => {
         }, [isFetchingData]
     )
 
-    const joinMessageTemplate = (message) => {
+    const joinMessageTemplate = (message, key) => {
         return (
-            <div key={message} className="context-message">
+            <div ref={(el) => {
+                setRefMessage(el)
+            }} key={key} className="context-message">
                 {message}
             </div>
         )
     };
 
-    const messageTemplate = (message, user) => {
+    const messageTemplate = (message, user, key) => {
         return (
-            <div key={message} className="message">
+            <div ref={(el) => {
+                setRefMessage(el)
+            }}
+                 key={key} className="message">
                 <Picture size="56px"/>
                 <div className="container-info">
                     <div className="userinfo">

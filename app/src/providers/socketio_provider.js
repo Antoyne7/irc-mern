@@ -4,7 +4,7 @@ import param from "../services/param";
 export let socket;
 
 export const initiateSocket = (channel, username) => {
-    socket = io(param.HOST);
+    socket = io(param.HOST, {transports: ['websocket'], upgrade: false});
     console.log(`Connecting socket...`);
     if (socket && channel) {
         socket.emit('join', channel.name, username)
