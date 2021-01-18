@@ -152,6 +152,7 @@ router.get("/channel/messages/get", [middlewares.auth.verifyToken],
                     const msgDetails = {
                         _id: msg._id,
                         message: msg.message,
+                        date: msg.date,
                         user: {
                             _id: userDetails._id,
                             username: userDetails.username,

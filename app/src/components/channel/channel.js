@@ -6,7 +6,12 @@ import useUser from "../../services/use-user";
 import axios from "axios";
 import param from "../../services/param";
 import authHeader from "../../services/auth-header";
+import dayjs from "dayjs";
+import 'dayjs/locale/fr'
 
+import relativeTime from "dayjs/plugin/relativeTime"
+
+dayjs.extend(relativeTime);
 
 const Channel = ({channelData}) => {
     const userState = useUser();
@@ -19,6 +24,8 @@ const Channel = ({channelData}) => {
 
     const [refMessage, setRefMessage] = useState(null);
 
+    const [globalLastMessage, setGlobalLastMessage] = useState({});
+
     useEffect(() => {
 
         if (!userState.isLoading && !userState.isError) {
@@ -26,11 +33,29 @@ const Channel = ({channelData}) => {
             //Get channels message
             axios.get(param.channel.getMessages + "?channel=" + channelData._id, {headers: authHeader()})
                 .then((resp) => {
+                    let lastMessage = {
+                        username: null,
+                        isJoinMessage: false,
+                        date: null,
+                    };
                     resp.data.forEach((msg) => {
-                        setMessageFeed((oldValue) => {
-                            return [...oldValue, messageTemplate(msg.message, msg.user)]
-                        })
+                        const lastMsgDate = dayjs(lastMessage.date);
+                        const msgDate = dayjs(msg.date);
+                        if (lastMessage && lastMsgDate && lastMessage.username === msg.user.username &&
+                            !lastMessage.isJoinMessage && lastMsgDate.diff(msgDate, 'minute') < 5) {
+                            console.log("same user");
+                            setMessageFeed((oldValue) => {
+                                return [...oldValue, sameUsernameMessageTemplate(msg.message, Date.now())]
+                            });
+                        } else {
+                            setMessageFeed((oldValue) => {
+                                return [...oldValue, messageTemplate(msg.message, msg.user, Date.now(), msg.date)]
+                            });
+                        }
+                        lastMessage = {username: msg.user.username, isJoinMessage: false, date: msg.date}
+                        console.log(lastMessage)
                     });
+                    setGlobalLastMessage({lastMessage});
                     setIsFecthingData(false);
                 })
                 .catch(e => {
@@ -42,14 +67,9 @@ const Channel = ({channelData}) => {
 
     useEffect(() => {
             if (!isFetchingData) {
+                scrollToBottom();
 
-                if (window.performance) {
-                    if (performance.navigation.type === 1) {
-                        initiateSocket(channelData, userState.user.username, true);
-                    } else {
-                        initiateSocket(channelData, userState.user.username, false);
-                    }
-                }
+                initiateSocket(channelData, userState.user.username);
 
                 socket.on("userJoin", (sentence) => {
                     console.log(sentence);
@@ -57,16 +77,16 @@ const Channel = ({channelData}) => {
                         const key = Date.now();
                         return [...oldValue, joinMessageTemplate(sentence, key)]
                     });
-                    if (refMessage) refMessage.scrollIntoView();
+                    scrollToBottom()
                 });
 
-                socket.on("chatMessage", (sentence, user) => {
-                    console.log("retour : ", sentence, user);
+                socket.on("chatMessage", (sentence, user, date) => {
+                    console.log("retour : ", sentence, user, date);
                     setMessageFeed((oldValue) => {
                         const key = Date.now();
-                        return [...oldValue, messageTemplate(sentence, user, key)]
+                        return [...oldValue, messageTemplate(sentence, user, key, date)]
                     });
-                    if (refMessage) refMessage.scrollIntoView();
+                    scrollToBottom()
                 });
 
                 socket.on("userLeft", (sentence) => {
@@ -74,7 +94,7 @@ const Channel = ({channelData}) => {
                         const key = Date.now();
                         return [...oldValue, joinMessageTemplate(sentence, key)]
                     });
-                    if (refMessage) refMessage.scrollIntoView();
+                    scrollToBottom()
                 });
 
                 return () => {
@@ -83,6 +103,9 @@ const Channel = ({channelData}) => {
             }
         }, [isFetchingData]
     )
+    const scrollToBottom = () => {
+        if (refMessage) refMessage.scrollIntoView()
+    }
 
     const joinMessageTemplate = (message, key) => {
         return (
@@ -94,23 +117,27 @@ const Channel = ({channelData}) => {
         )
     };
 
-    const messageTemplate = (message, user, key) => {
+    const messageTemplate = (message, user, key, date) => {
         return (
-            <div ref={(el) => {
-                setRefMessage(el)
-            }}
-                 key={key} className="message">
-                <Picture size="56px"/>
+            <div key={key} className="message">
+                <Picture size="40px"/>
                 <div className="container-info">
                     <div className="userinfo">
                         <span>{user.username}</span>
-                        <span className="date">04/01/2020 à 19h20</span>
+                        <span className="date">{dayjs(date, {locale: "fr"}).fromNow()}</span>
                     </div>
                     <div className="text">{message}</div>
                 </div>
             </div>
         )
     };
+    const sameUsernameMessageTemplate = (message, key) => {
+        return (
+            <div className={"same-message"} key={key}>
+                {message}
+            </div>
+        )
+    }
 
     const writeMessage = (e) => {
         setMessage(e.target.value)
@@ -136,6 +163,10 @@ const Channel = ({channelData}) => {
                 <div className="container">
                     <div className="messages-container">
                         {messageFeed}
+                        <div ref={(el) => {
+                            setRefMessage(el)
+                        }}
+                        />
                     </div>
                 </div>
             </div>

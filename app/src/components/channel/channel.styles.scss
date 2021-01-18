@@ -50,16 +50,25 @@
       padding: 0;
     }
 
+    .same-message {
+      padding-top: 7px;
+      padding-left: 50px;
+      color: var(--contrast-projet);
+    }
+    > div:first-of-type{
+      padding-top: 15px;
+    }
     .message {
       display: flex;
       flex-wrap: wrap;
-      padding: 15px 0;
+      padding-top: 25px;
 
       .container-info {
         display: flex;
         flex-direction: column;
         padding-left: 10px;
         max-width: calc(100% - 80px);
+
 
         .userinfo {
           display: flex;
@@ -78,6 +87,10 @@
               font-size: 1.3rem;
               padding-left: 10px;
               font-weight: 400;
+
+              &:first-letter {
+                text-transform: uppercase;
+              }
             }
           }
         }
@@ -96,7 +109,7 @@
     .context-message {
       font-family: Lato, sans-serif;
       text-align: center;
-      margin: 5px 0 10px;
+      margin: 10px 0 10px;
       font-size: 1.6rem;
       color: var(--gris);
       font-weight: 400;
