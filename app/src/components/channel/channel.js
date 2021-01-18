@@ -3,12 +3,9 @@ import "./channel.styles.scss"
 import Picture from "../picture/picture"
 import {initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
 
-
 const Channel = ({channelData}) => {
     const [messageFeed, setMessageFeed] = useState([]);
-
     const [message, setMessage] = useState("");
-
     const [user, setUser] = useState(null);
 
     useEffect(() => {
