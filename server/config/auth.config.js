@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 module.exports = {
-    secret: "super-mern-application"
+    secret: process.env.jwt_secret
 }
