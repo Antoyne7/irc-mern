@@ -29,6 +29,11 @@ const UserSchema = new mongoose.Schema({
         required: true,
         minLength: 7
     },
+    whiteTheme: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     channels: [
         {
             type: mongoose.Schema.Types.ObjectId,
