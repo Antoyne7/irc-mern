@@ -35,6 +35,12 @@ const UserSchema = new mongoose.Schema({
             ref: "Channel"
         }
     ],
+    picture: {
+        type: String,
+        required: false,
+        trim: true,
+        unique: false
+    },
     roles: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -52,10 +58,12 @@ UserSchema.pre("save", async function (next) {
     next()
 })
 
-
-UserSchema.statics.findByCredentials = async (identifier, password) => {
+UserSchema.statics.findByCredentials = async (firstCredential, password) => {
     // Search for a user by email and password.
-    const user = await User.findOne({identifier}).exec()
+    const user = await User.findOne({$or: [
+        {username: firstCredential},
+        {email: firstCredential}
+    ]}).exec()
     if (!user) {
         throw new Error({error: 'Invalid auth credentials'})
     }
@@ -72,10 +80,7 @@ UserSchema.statics.findByUsername = async (username) => {
     if (!user) {
         throw new Error({error: 'Invalid auth credentials'})
     }
-    const isPasswordMatch = await bcrypt.compare(password, user.password)
-    if (!isPasswordMatch) {
-        throw new Error({error: 'Invalid auth credentials'})
-    }
+    console.log("user", _id)
     return user
 };
 

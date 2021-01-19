@@ -1,32 +1,43 @@
 import './styles/App.css';
-import {Switch, Route} from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 import Login from './pages/auth/login'
 import Register from "./pages/auth/register";
-import Home from "./pages/home/home";
+import NewChannel from "./pages/channel/new-channel";
+import Channels from "./pages/channel/channel";
 import LoginGuest from "./pages/auth/login_guest"
 import React from "react";
+import Profile from "./pages/profile/profile";
+
 
 function App() {
+
     return (
         <div className="App">
             <Switch>
                 <Route exact path={["/", "/login_guest"]}>
-                    <LoginGuest/>
+                    <LoginGuest />
                 </Route>
                 <Route path="/login">
-                    <Login/>
+                    <Login />
                 </Route>
                 <Route path="/register">
-                    <Register/>
+                    <Register />
                 </Route>
-                <Route path="/channels">
-                    <Register/>
+                <Route path="/new-channel">
+                    <NewChannel />
                 </Route>
-                <Route path="/home">
-                    <Home/>
+                <Route path={"/home"}>
+
+                </Route>
+                <Route path="/profile">
+                    <Profile />
+                </Route>
+                <Route path={["/channels/:channel"]} >
+                    <Channels />
                 </Route>
             </Switch>
+            <div className="modal-container" />
         </div>
     );
 }

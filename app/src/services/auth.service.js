@@ -22,10 +22,10 @@ const guest_login = (username) => {
     })
 };
 
-const login = (email, password) => {
+const login = (firstCredential, password) => {
     return axios
         .post(param.auth.signin, {
-            email,
+            firstCredential,
             password,
         })
         .then((response) => {
@@ -47,8 +47,7 @@ const getCurrentUser = () => {
 };
 
 const checkToken = (redirectLogin = true) => {
-    axios
-        .get(param.auth.checkToken, {
+    axios.get(param.auth.checkToken, {
             headers: AuthHeader(),
         })
         .catch(() => {

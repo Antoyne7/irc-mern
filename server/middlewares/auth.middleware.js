@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
+const User = require("../models/user.model")
 
 verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
@@ -8,45 +9,15 @@ verifyToken = (req, res, next) => {
         return res.status(403).send({ message: "No token provided!" });
     }
 
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, config.secret, async (err, decoded) => {
         if (err) {
             return res.status(401).send({ message: "Unauthorized!" });
         }
-        req.userId = decoded.id;
+        req.userId = decoded._id;
+        req.connectedUser = await User.findById(req.userId).exec()
         next();
     });
 };
-
-/*isAdmin = (req, res, next) => {
-    User.findById(req.userId).exec((err, user) => {
-        if (err) {
-            res.status(500).send({ message: err });
-            return;
-        }
-
-        Role.find(
-            {
-                _id: { $in: user.roles }
-            },
-            (err, roles) => {
-                if (err) {
-                    res.status(500).send({ message: err });
-                    return;
-                }
-
-                for (let i = 0; i < roles.length; i++) {
-                    if (roles[i].name === "admin") {
-                        next();
-                        return;
-                    }
-                }
-
-                res.status(403).send({ message: "Require Admin Role!" });
-                return;
-            }
-        );
-    });
-};*/
 
 const auth = {
     verifyToken

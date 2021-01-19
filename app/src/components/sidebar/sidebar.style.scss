@@ -60,23 +60,26 @@
     }
 
     .channel-container {
-      div:first-of-type {
-        margin-top: 10px;
-      }
-
+     
       .channel {
         position: relative;
+        cursor: pointer;
+        border-radius: 6px;
+        padding-left: 10px;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, .08);
+        }
       }
 
       .channel-content {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
 
         .pfp {
           border: solid 4px var(--background-bis);
         }
-
-        padding: 20px 0;
-        display: flex;
-        align-items: center;
 
         .text {
           padding-left: 10px;
@@ -137,4 +140,3 @@
 
 
 }
-

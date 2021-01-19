@@ -2,11 +2,16 @@ import React from "react";
 
 import "./button.style.scss"
 
+const BUTTON_THEMES = [
+    "primary",
+    "secondary"
+]
 
-const Button = ({children, onClick = null, borderOnly = false}) => {
+
+const Button = ({children, onClick = null, borderOnly = false, theme = "primary"}) => {
 
     const handleClick = (evt) => {
-        if (onClick){
+        if (onClick) {
             onClick(evt)
         }
     };
@@ -14,7 +19,7 @@ const Button = ({children, onClick = null, borderOnly = false}) => {
     return (
         <button
             onClick={(evt) => handleClick(evt)}
-            className={`Button ${borderOnly ? "border-only" : ""}`}
+            className={`Button ${borderOnly ? "border-only" : ""} ${theme}`}
         >
             {children}
         </button>

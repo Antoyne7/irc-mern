@@ -8,6 +8,8 @@
     --blanc-fond-clair: #F2F2F2;
     --blanc: #FFFFFF;
     --gris: #7D7D7D;
+    --rouge: #ae1f1f;
+    --vert: #65A30D;
 
     --background: var(--noir);
     --background-bis: var(--noir-bis);
@@ -20,6 +22,8 @@
 
     --sidebar-size: 375px;
     --menu-size:70px;
+    --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
+    --box-shadow-modal: 0 0 4px 4px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 1440px) {

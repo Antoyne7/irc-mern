@@ -11,12 +11,12 @@ import AuthService from "../../services/auth.service"
 const Login = () => {
     const history = useHistory();
 
-    const [username, setUsername] = useState("")
+    const [firstCredential, setFirstCredential] = useState("")
     const [password, setPassword] = useState("")
 
-    const onChangeUsername = (e) => {
-        const username = e.target.value;
-        setUsername(username);
+    const onChangeFirstCredential = (e) => {
+        const firstCredential = e.target.value;
+        setFirstCredential(firstCredential);
     };
 
     const onChangePassword = (e) => {
@@ -26,23 +26,12 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // setMessage("");
-        // setLoading(true);
-        AuthService.login(username, password).then(
+        AuthService.login(firstCredential, password).then(
             () => {
-                // TODO: redirect
-                console.log("Redirect page", AuthService.getCurrentUser())
                 history.push("/home");
             },
             (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                // setLoading(false);
-                // setMessage(resMessage);
+                console.error('error:', error)
             }
         );
     };
@@ -56,9 +45,9 @@ const Login = () => {
 
             <form>
                 <Input
-                    value={username}
-                    onChange={onChangeUsername}
-                    placeholder={"Nom d'utilisateur"}
+                    value={firstCredential}
+                    onChange={onChangeFirstCredential}
+                    placeholder={"Nom d'utilisateur ou Email"}
                     name={"name"}
                 />
                 <Input
