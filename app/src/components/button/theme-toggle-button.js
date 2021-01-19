@@ -7,8 +7,6 @@ import param from '../../services/param'
 import "./theme-toggle-button.style.scss"
 
 const ThemeToggleButton = () => {
-    console.log("AuthService.getCurrentUser().user?.whiteTheme", AuthService.getCurrentUser().user?.whiteTheme)
-
     const [isWhiteTheme, setIsWhiteTheme] = useState(
         (AuthService.getCurrentUser().user?.whiteTheme === 'true' || 
         AuthService.getCurrentUser().user?.whiteTheme === true)
