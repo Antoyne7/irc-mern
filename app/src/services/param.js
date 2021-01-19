@@ -19,6 +19,7 @@ const param = {
     user: {
         picture: APIHOST + "/profile/picture",
         profile: APIHOST + "/profile",
+        theme: APIHOST + "/profile/theme?whiteTheme=",
     }
 }
 

@@ -163,7 +163,6 @@ const Profile = () => {
                     Se déconnecter
                 </Button>
             </div>
-
         </div>
     )
 };

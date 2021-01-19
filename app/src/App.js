@@ -8,13 +8,13 @@ import Channels from "./pages/channel/channel";
 import LoginGuest from "./pages/auth/login_guest"
 import React from "react";
 import Profile from "./pages/profile/profile";
-
+import authService from './services/auth.service';
 
 function App() {
-    const whiteTheme = localStorage.getItem('white-theme')
-    
+    const user = authService.getCurrentUser();
+
     return (
-        <div className={`App ${(whiteTheme == true) ? "white-theme" : ""}`}>
+        <div className={`App ${(user.whiteTheme == true) ? "white-theme" : ""}`}>
             <Switch>
                 <Route exact path={["/", "/login_guest"]}>
                     <LoginGuest />

@@ -1,11 +1,15 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import authHeader from '../../services/auth-header'
+import AuthService from '../../services/auth.service'
+import param from '../../services/param'
 
 import "./theme-toggle-button.style.scss"
 
 const ThemeToggleButton = () => {
-    const whiteTheme = localStorage.getItem('white-theme')
+    const user = AuthService.getCurrentUser()
 
-    const [isWhiteTheme, setIsWhiteTheme] = useState((whiteTheme == 'true'))
+    const [isWhiteTheme, setIsWhiteTheme] = useState((user.whiteTheme == 'true'))
 
     useEffect(() => {
         if (isWhiteTheme) {
@@ -14,8 +18,8 @@ const ThemeToggleButton = () => {
             document.querySelector('.App').classList.remove('white-theme')
         }
         localStorage.setItem("white-theme", isWhiteTheme)
+        axios.get(param.user.theme + isWhiteTheme, { headers: authHeader()})
     }, [isWhiteTheme])
-
 
     return (
         <div className="theme-toggle-button">
@@ -25,7 +29,7 @@ const ThemeToggleButton = () => {
                 type="checkbox"
                 id="toggle"
             />
-            <label for="toggle"></label>
+            <label htmlFor="toggle" />
         </div>
     )
 }
