@@ -17,6 +17,10 @@
     margin: 0 auto;
   }
 
+  &.danger {
+    background-color: var(--rouge)
+  }
+
   &.border-only {
     background-color: transparent;
     border: 2px solid var(--violet-fonce);

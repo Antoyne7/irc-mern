@@ -38,6 +38,13 @@
     min-height: 100vh;
 }
 
+.App.white-theme {
+    --background: var(--blanc-projet);
+    --background-bis: var(--blanc);
+    --contrast-projet: var(--noir);
+    --contrast-fond-clair: var(--noir-bis);
+}
+
 * {
     box-sizing: border-box;
 }

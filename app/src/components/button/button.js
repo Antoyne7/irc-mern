@@ -4,7 +4,8 @@ import "./button.style.scss"
 
 const BUTTON_THEMES = [
     "primary",
-    "secondary"
+    "secondary",
+    "danger"
 ]
 
 

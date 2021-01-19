@@ -13,8 +13,11 @@ import authHeader from "../../services/auth-header";
 import UserService from "../../services/user"
 import useUser from "../../services/use-user";
 import SuccessAlert from "../alert/success-alert";
+import ThemeToggleButton from "../button/theme-toggle-button";
+import { useHistory } from "react-router-dom";
 
 const Profile = () => {
+    const history = useHistory();
     const pictureInput = useRef()
     const userState = useUser();
 
@@ -85,6 +88,11 @@ const Profile = () => {
         }).catch(err => console.log("error:", err))
     }
 
+    const handleDisconnect = () => {
+        localStorage.removeItem("user")
+        history.push('/')
+    }
+
     return (
         <div className="Profile">
             {alertMessage !== "" &&
@@ -93,6 +101,11 @@ const Profile = () => {
                 <h2>Profil</h2>
             </div>
             <Navigation />
+
+            <div className="theme-button-container">
+                <ThemeToggleButton />
+            </div>
+
             <form encType="multipart/form-data">
                 <div className="form-title">
                     <h3>
@@ -141,11 +154,16 @@ const Profile = () => {
                     onChange={onChangeOldPassword}
                 />
             </form>
-            <div className="button-container">
+            <div className="buttons-container">
                 <Button onClick={handleSubmit}>
                     Enregistrer
                 </Button>
+                <hr />
+                <Button theme="danger" onClick={handleDisconnect}>
+                    Se déconnecter
+                </Button>
             </div>
+
         </div>
     )
 };

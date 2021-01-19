@@ -11,9 +11,10 @@ import Profile from "./pages/profile/profile";
 
 
 function App() {
-
+    const whiteTheme = localStorage.getItem('white-theme')
+    
     return (
-        <div className="App">
+        <div className={`App ${(whiteTheme == true) ? "white-theme" : ""}`}>
             <Switch>
                 <Route exact path={["/", "/login_guest"]}>
                     <LoginGuest />
