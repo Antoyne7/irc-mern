@@ -141,7 +141,9 @@ router.get("/channel/messages/get", [middlewares.auth.verifyToken],
             let maxRequest = 20;
 
             if (maxRequest && !isNaN(maxRequest) && channel.messages.length > maxRequest) {
+                channel.messages.reverse();
                 channel.messages.length = maxRequest;
+                channel.messages.reverse();
             }
             const messages = channel.messages;
 
