@@ -84,7 +84,7 @@ router.post('/auth/guest_login',
 
             await user.save(err => {
                 if (err) {
-                    console.log("erreur")
+                    console.log("erreur");
                     return res.status(500).send({ message: err });
                 } else {
                     const token = jwt.sign({ _id: user._id }, config.secret)

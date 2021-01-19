@@ -1,48 +1,112 @@
 import React, {useEffect, useState} from "react";
 import "./channel.styles.scss"
 import Picture from "../picture/picture"
-import {initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
+import {disconnectSocket, initiateSocket, socket, socketSendMessage} from "../../providers/socketio_provider";
+import useUser from "../../services/use-user";
+import axios from "axios";
+import param from "../../services/param";
+import authHeader from "../../services/auth-header";
+
+import dayjs from "dayjs";
+import 'dayjs/locale/fr'
+import relativeTime from "dayjs/plugin/relativeTime"
+
+dayjs.extend(relativeTime);
 
 const Channel = ({channelData}) => {
+    let globalLastMessage;
+
+    const userState = useUser();
+
     const [messageFeed, setMessageFeed] = useState([]);
     const [message, setMessage] = useState("");
-    const [user, setUser] = useState(null);
+
+    const [isFetchingData, setIsFecthingData] = useState(true);
+
+    const [refMessage, setRefMessage] = useState(null);
 
     useEffect(() => {
-        setMessageFeed([])
-        const userTemp = JSON.parse(localStorage.getItem("user"));
-        setUser(userTemp);
-        initiateSocket(channelData, userTemp.user.username);
+        if (!userState.isLoading && !userState.isError) {
 
-        socket.on("message", (msg) => {
-            console.log("YA UN MESSAGE LA:", msg)
-        });
-
-        socket.on("userJoin", (sentence) => {
-            console.log(sentence);
-            setMessageFeed((oldValue) => {
-                return [...oldValue, joinMessageTemplate(sentence)]
-            });
-        });
-
-        socket.on("chatMessage", (sentence, user) => {
-            console.log("retour : ", sentence, user)
-            setMessageFeed((oldValue) => {
-                return [...oldValue, messageTemplate(sentence, user)]
-            });
-        })
-
-        socket.on("userLeft", (sentence) => {
-            console.log(sentence)
-        })
-
-        return () => {
-            socket.disconnect();
+            //Get channels message
+            axios.get(param.channel.getMessages + "?channel=" + channelData._id, {headers: authHeader()})
+                .then((resp) => {
+                    globalLastMessage = {
+                        username: null,
+                        isJoinMessage: false,
+                        date: null,
+                    };
+                    resp.data.forEach((msg) => {
+                        displayMessage(globalLastMessage, msg);
+                        globalLastMessage = {username: msg.user.username, isJoinMessage: false, date: msg.date};
+                    });
+                    setIsFecthingData(false);
+                })
+                .catch(e => {
+                    console.log(e)
+                });
         }
 
-    }, [channelData]);
+    }, [userState]);
 
-    const joinMessageTemplate = (message) => {
+    useEffect(() => {
+
+            if (!isFetchingData) {
+                scrollToBottom();
+
+                initiateSocket(channelData, userState.user.username);
+
+                socket.on("userJoin", (sentence) => {
+                    setMessageFeed((oldValue) => {
+                        const key = Date.now();
+                        return [...oldValue, joinMessageTemplate(sentence, key)]
+                    });
+                    globalLastMessage = {username: "", isJoinMessage: true, date: ""};
+                    scrollToBottom()
+                });
+
+                socket.on("chatMessage", (sentence, user, date) => {
+                    displayMessage(globalLastMessage, {message: sentence, user: user, date});
+                    globalLastMessage = {username: user.username, isJoinMessage: false, date: date};
+                    scrollToBottom()
+                });
+
+                socket.on("userLeft", (sentence) => {
+                    setMessageFeed((oldValue) => {
+                        const key = Date.now();
+                        return [...oldValue, joinMessageTemplate(sentence, key)]
+                    });
+                    globalLastMessage = {username: "", isJoinMessage: true, date: ""};
+                    scrollToBottom()
+                });
+
+                return () => {
+                    disconnectSocket();
+                }
+            }
+        }, [isFetchingData]
+    );
+
+    const displayMessage = (lastMessage, msg) => {
+        const lastMsgDate = dayjs(lastMessage.date);
+        const msgDate = dayjs(msg.date);
+        if (lastMessage && lastMsgDate && lastMessage.username === msg.user.username &&
+            !lastMessage.isJoinMessage && msgDate.diff(lastMsgDate, 'minute') < 3) {
+            setMessageFeed((oldValue) => {
+                return [...oldValue, sameUsernameMessageTemplate(msg.message, Date.now())]
+            });
+        } else {
+            setMessageFeed((oldValue) => {
+                return [...oldValue, messageTemplate(msg.message, msg.user, Date.now(), msg.date)]
+            });
+        }
+    }
+
+    const scrollToBottom = () => {
+        if (refMessage) refMessage.scrollIntoView()
+    };
+
+    const joinMessageTemplate = (message, key) => {
         return (
             <div key={message + Date.now()} className="context-message">
                 {message}
@@ -50,47 +114,68 @@ const Channel = ({channelData}) => {
         )
     };
 
-    const messageTemplate = (message, user) => {
+    const messageTemplate = (message, user, key, date) => {
         return (
-            <div key={message} className="message">
-                <Picture size="56px"/>
+            <div key={key} className="message">
+                <Picture size="40px"/>
                 <div className="container-info">
                     <div className="userinfo">
-                        <span>{user.user.username}</span>
-                        <span className="date">04/01/2020 à 19h20</span>
+                        <span>{user.username}</span>
+                        <span className="date">{dayjs(date, {locale: "fr"}).fromNow()}</span>
                     </div>
                     <div className="text">{message}</div>
                 </div>
             </div>
         )
     };
+    const sameUsernameMessageTemplate = (message, key) => {
+        return (
+            <div className={"same-message"} key={key}>
+                {message}
+            </div>
+        )
+    }
 
     const writeMessage = (e) => {
         setMessage(e.target.value)
     };
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") sendMessage(e)
+    };
 
     const sendMessage = (e) => {
         e.preventDefault();
-        socketSendMessage(channelData, message, user)
-        setMessage("");
+        if (message.length > 0) {
+            socketSendMessage(channelData, message, {
+                _id: userState.user._id,
+                username: userState.user.username,
+            });
+            setMessage("");
+        }
     };
+
 
     return (
         <div className="channel-content-container">
             <div className="title-container container">
-                <h2>{channelData.name}'s Channel</h2>
+                <h2>{channelData.name}</h2>
             </div>
             <div className="channel-message-container">
                 <div className="container">
                     <div className="messages-container">
                         {messageFeed}
+                        <div ref={(el) => {
+                            setRefMessage(el)
+                        }}
+                        />
                     </div>
                 </div>
             </div>
             <div className="input-container">
                 <div className="container">
                     <form onSubmit={(e) => sendMessage(e)} className="input-msg">
-                        <textarea onChange={(e) => writeMessage(e)} value={message} placeholder="Message..."/>
+                        <textarea onKeyPress={(e) => handleKeyPress(e)} onChange={(e) => writeMessage(e)}
+                                  value={message} placeholder="Message..."/>
                         <div className="icons-container">
                             <svg className="mic" width="15" height="23" viewBox="0 0 15 23" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -121,6 +206,7 @@ const Channel = ({channelData}) => {
             </div>
         </div>
     )
-};
+}
+
 
 export default Channel

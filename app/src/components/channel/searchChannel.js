@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 import Input from "../input/input";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faUser} from '@fortawesome/free-solid-svg-icons'
 
 import "./searchChannel.style.scss"
 import axios from "axios";
 import param from "../../services/param";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import authHeader from "../../services/auth-header";
 
 
@@ -20,13 +20,13 @@ const SearchChannel = () => {
     const onChangeName = (e) => {
         const name = e.target.value;
         if (name.length >= 3) {
-            axios.get(param.channel.search + name + "&maxresp=" + 5)
+            axios.get(param.channel.search + name + "&maxresp=" + 5, {headers: authHeader()})
                 .then((response) => {
                     console.log(response.data);
                     setChannels(response.data)
                 }).catch(e => {
-                    console.log(e)
-                })
+                console.log(e)
+            })
         } else {
             setChannels([])
         }
@@ -35,13 +35,13 @@ const SearchChannel = () => {
     const goTo = (slug) => {
         axios.post(
             param.channel.connect,
-            { slug },
-            { headers: authHeader() }
+            {slug},
+            {headers: authHeader()}
         ).then((response) => {
             console.log("ajout channel: ", response);
             history.push({
                 pathname: '/channels/' + slug,
-                state: { slug: slug }
+                state: {slug: slug}
             })
         }).catch(e => {
             console.log("ajout channel: ERREUR:", e)
@@ -56,7 +56,7 @@ const SearchChannel = () => {
                 </div>
                 <div className="channel-users">
                     {server.connected}/{server.max_capacity}
-                    <FontAwesomeIcon icon={faUser} color={"var(--primary)"} />
+                    <FontAwesomeIcon icon={faUser} color={"var(--primary)"}/>
                 </div>
             </div>
         ))

@@ -1,22 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-const socketio = require("socket.io");
 const app = express();
 
 const corsOptions = {
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
 };
 
 const server = http.createServer(app);
-
-const io = socketio(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
-    }
-});
-
 
 app.use(cors(corsOptions));
 // parse requests of content-type - application/json
@@ -25,32 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // serve static files
-app.use(express.static(__dirname + "/uploads"))
-
-//Run quand qqn se connecte
-io.on('connection', socket => {
-    console.log('New WebSocket connection');
-
-    socket.on("join", (room, username) => {
-        socket.join(room)
-        io.to(room).emit('userJoin', username + " a rejoint le chat");
-    });
-
-    socket.on('chat', (message, room, user) => {
-        console.log(message, user?.username, " | room: " + room.name)
-        io.to(room.name).emit('chatMessage', message, user)
-    })
-
-    socket.on('disconnect', () => {
-        io.emit('userLeft', "Un utilisateur a quitté le chat");
-        socket.disconnect()
-    });
-
-
-    socket.on('chatMessage', (msg) => {
-        io.emit('message', msg)
-    })
-});
+app.use(express.static(__dirname + "/uploads"));
 
 // Connect to Database
 require("./database");
@@ -59,8 +25,7 @@ require("./database");
 require("./routers")(app);
 
 //Socket IO
-require("./socketio");
-
+require("./socketio")(server);
 
 // Start listening
 const PORT = process.env.PORT || 8080;

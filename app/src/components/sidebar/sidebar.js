@@ -27,6 +27,19 @@ const Sidebar = ({ channels }) => {
         fetchChannels()
     }, [channels])
 
+
+    const fetchChannels = async () => {
+        const channelsTemp = []
+        for (const channel of channels) {
+            await axios.get(param.channel.get + channel, { headers: AuthHeader()})
+                .then((resp) => {
+                    console.log(resp)
+                    channelsTemp.push(resp.data.channel)
+                })
+        }
+        setChannelList(channelsTemp)
+    }
+    
     const renderChannel = (channel) => {
         return (
             <React.Fragment key={channel.name}>
