@@ -7,17 +7,21 @@ import param from '../../services/param'
 import "./theme-toggle-button.style.scss"
 
 const ThemeToggleButton = () => {
-    const user = AuthService.getCurrentUser()
+    console.log("AuthService.getCurrentUser().user?.whiteTheme", AuthService.getCurrentUser().user?.whiteTheme)
 
-    const [isWhiteTheme, setIsWhiteTheme] = useState((user.whiteTheme == 'true'))
+    const [isWhiteTheme, setIsWhiteTheme] = useState(
+        (AuthService.getCurrentUser().user?.whiteTheme === 'true' || 
+        AuthService.getCurrentUser().user?.whiteTheme === true)
+    )
 
     useEffect(() => {
+        const userStorage = AuthService.getCurrentUser()
         if (isWhiteTheme) {
             document.querySelector('.App').classList.add('white-theme')
         } else {
             document.querySelector('.App').classList.remove('white-theme')
         }
-        localStorage.setItem("white-theme", isWhiteTheme)
+        localStorage.setItem("user", JSON.stringify({ ...userStorage, user: {...userStorage?.user, whiteTheme: isWhiteTheme}}))
         axios.get(param.user.theme + isWhiteTheme, { headers: authHeader()})
     }, [isWhiteTheme])
 

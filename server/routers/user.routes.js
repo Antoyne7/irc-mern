@@ -77,9 +77,6 @@ router.post('/profile',
 router.get('/profile/theme',
     [middlewares.auth.verifyToken],
     async (req, res) => {
-        console.log("actual whiteTheme:", req.connectedUser.whiteTheme)
-        console.log("req.query.whiteTheme:", req.query.whiteTheme)
-
         req.connectedUser.whiteTheme = (req.query.whiteTheme == "true")
 
         await req.connectedUser.save(err => {

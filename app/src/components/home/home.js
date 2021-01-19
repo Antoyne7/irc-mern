@@ -27,6 +27,12 @@ const Home = ({ children, menuSelected = 0 }) => {
     useEffect(() => {  
         if (!userState.isLoading && !userState.user) {
             history.push('/')
+        } else {
+            if (userState.user?.whiteTheme) {
+                document.querySelector('.App').classList.add('white-theme')
+            } else {
+                document.querySelector('.App').classList.remove('white-theme')
+            }
         }
     }, [userState, history])
 

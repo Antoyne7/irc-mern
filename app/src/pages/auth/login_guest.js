@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 
 import AuthService from "../../services/auth.service";
+import Input from "../../components/input/input";
 
 
 const LoginGuest = () => {
@@ -41,7 +42,13 @@ const LoginGuest = () => {
             <h1>Herobrine</h1>
             <form onSubmit={(evt) => createAccount(evt)} className="form">
                 <h2>Rejoindre en tant qu'invité</h2>
-                <input onChange={(evt) => changeUsername(evt)} placeholder="Nom d'utilisateur"/>
+                <Input
+                    value={username}
+                    onChange={(evt) => changeUsername(evt)}
+                    type="text"
+                    placeholder="Nom d'utilisateur"
+                    name="name"
+                />
             </form>
 
             <div className="button-container">
