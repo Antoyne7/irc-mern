@@ -24,7 +24,7 @@ const Home = ({ children, menuSelected = 0 }) => {
         }
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {  
         if (!userState.isLoading && !userState.user) {
             history.push('/')
         }

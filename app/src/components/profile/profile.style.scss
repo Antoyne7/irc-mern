@@ -74,8 +74,13 @@
     right: 20px;
   }
 
-  .button-container {
-    padding: 20px 20px 0;
-    margin-bottom: 20px;
+  .buttons-container {
+    padding: 20px;
+
+    hr {
+      margin: 20px auto;
+      width: 50%;
+      border-color: var(--gris);
+    }
   }
 }

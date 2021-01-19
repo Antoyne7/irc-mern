@@ -12,16 +12,25 @@ function useUser() {
 
     useEffect(() => {
         async function fetchData() {
-            const { data, status } = await axios.get(
+            axios.get(
                 param.auth.checkToken,
                 { headers: authHeader() },
-            )
-            setUserState(() => {
-                return {
-                    user: data,
-                    error: status > 299,
-                    loading: false
-                }
+            ).then((response) => {
+                setUserState(() => {
+                    return {
+                        user: response.data,
+                        error: response.status > 299,
+                        loading: false
+                    }
+                })
+            }).catch(() => {
+                setUserState(() => {
+                    return {
+                        user: false,
+                        error: true,
+                        loading: false
+                    }
+                })
             })
         }
         fetchData()
