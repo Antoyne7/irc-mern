@@ -4,7 +4,7 @@ const middlewares = require('../middlewares')
 const router = express.Router()
 
 // Test route
-router.get("/", (req, res) => {
+router.get("/test", (req, res) => {
     res.json({message: "Welcome Herobrine to the application."});
 });
 
